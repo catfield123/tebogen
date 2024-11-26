@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tebogen"
+current_version = "0.0.1"
+description = "A powerful tool for creating data-collecting Telegram bots."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Artyom Prokhorov"}]
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+tebogen = "tebogen.main:main"
+
