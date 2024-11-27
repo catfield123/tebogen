@@ -73,3 +73,8 @@ class QuestionList:
 
     def to_dict(self):
         return {"questions": [q.to_dict() for q in self._questions]}
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        questions = [Question.from_dict(q) for q in data["questions"]]
+        return cls(questions)

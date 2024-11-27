@@ -1,3 +1,4 @@
+from ValidatorFactory import ValidatorFactory
 import utils
 from Validators import Validator
 
@@ -57,3 +58,15 @@ class Question:
             "variable_name": self._variable_name,
             "validator": self._validator.to_dict()
         }
+
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        validator = None
+        if data.get("validator"):
+            validator = ValidatorFactory.create(data["validator"])
+        return cls(
+            name=data["name"],
+            variable_name=data["variable_name"],
+            validator=validator,
+        )

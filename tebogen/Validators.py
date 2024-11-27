@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-class DateFormat(Enum):
+class DateFormatEnum(Enum):
     DD_MM_YYYY = "dd.mm.yyyy"
     MM_DD_YYYY = "mm.dd.yyyy"
     YYYY_MM_DD = "yyyy.mm.dd"
@@ -71,9 +71,9 @@ class TextValidator(Validator):
 @dataclass
 class DateValidator(Validator):
     name = "date_validator"
-    date_format : DateFormat
+    date_format : DateFormatEnum
 
-    def __init__(self, date_format : DateFormat = DateFormat.DD_MM_YYYY):
+    def __init__(self, date_format : DateFormatEnum = DateFormatEnum.DD_MM_YYYY):
         self.date_format = date_format
 
     def to_dict(self):

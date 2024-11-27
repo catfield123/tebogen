@@ -115,3 +115,15 @@ class QuestionGroupList:
         return [
                 item.to_dict() for item in self._questions_and_groups
             ]
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls(
+                [
+                Question.from_dict(item) if "questions" not in item else Group.from_dict(item)
+                for item in data
+                ]
+        )
+        
+        return obj
+

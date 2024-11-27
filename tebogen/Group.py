@@ -52,3 +52,12 @@ class Group:
             "variable_name": self._variable_name,
             "questions": [q.to_dict() for q in self._questions],
         }
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        questions = [Question.from_dict(q) for q in data["questions"]]
+        return cls(
+            name=data["name"],
+            variable_name=data["variable_name"],
+            questions=questions,
+        )

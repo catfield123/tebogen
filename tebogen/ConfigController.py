@@ -3,6 +3,7 @@ from QuestionGroupList import QuestionGroupList
 import json
 
 from ConfigJSONEncoder import ConfigJSONEncoder
+from ValidatorFactory import ValidatorFactory
 
 class ConfigController:
     _is_admin_bot_enabled : bool = False
@@ -47,6 +48,22 @@ class ConfigController:
                       cls=ConfigJSONEncoder, 
                       ensure_ascii=False
                       )
+        
+    @classmethod
+    def load_from_file(cls, filename="tebogen_config.json"):
+        with open(filename, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        obj = cls(
+                data["is_admin_bot_enabled"],
+                data["is_google_sheets_sync_enabled"],
+                QuestionGroupList.from_dict(data["questions_and_groups"])
+
+            )
+        
+        print(data)
+        for validator in data["validators"]:
+            obj.add_validator(validator.get("name"))
+        return obj
         
         
         
