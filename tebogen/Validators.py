@@ -19,8 +19,12 @@ class Validator:
 @dataclass
 class IntegerValidator(Validator):
     name = "integer_validator"
-    min_value: int | None = None
-    max_value: int | None = None
+    min_value: int | None
+    max_value: int | None
+
+    def __init__ (self, min_value: int | None = None, max_value: int | None = None):
+        self.min_value = min_value
+        self.max_value = max_value
 
     def to_dict(self):
         return {
@@ -35,6 +39,10 @@ class FloatValidator(Validator):
     min_value: float | None = None
     max_value: float | None = None
 
+    def __init__ (self, min_value: float | None = None, max_value: float | None = None):
+        self.min_value = min_value
+        self.max_value = max_value
+
     def to_dict(self):
         return {
             "name": self.name,
@@ -46,8 +54,8 @@ class FloatValidator(Validator):
 @dataclass
 class TextValidator(Validator):
     name = 'text_validator'
-    min_length: int | None = None
-    max_length: int | None = None
+    min_length: int | None
+    max_length: int | None
 
     def __init__ (self, min_length: int | None = None, max_length: int | None = None):
         self.min_length = min_length
@@ -63,7 +71,7 @@ class TextValidator(Validator):
 @dataclass
 class DateValidator(Validator):
     name = "date_validator"
-    date_format : DateFormat = DateFormat.DD_MM_YYYY
+    date_format : DateFormat
 
     def __init__(self, date_format : DateFormat = DateFormat.DD_MM_YYYY):
         self.date_format = date_format
