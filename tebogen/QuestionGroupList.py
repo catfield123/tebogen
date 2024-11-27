@@ -6,6 +6,9 @@ class QuestionGroupList:
     _questions_and_groups : list[Question | Group] = []
 
     def __init__(self, questions_and_groups : list[Question | Group]):
+        for element in questions_and_groups:
+            if not isinstance(element, Question) and not isinstance(element, Group):
+                raise TypeError("questions_and_groups must be a list of Question or Group instances")
         self._questions_and_groups = questions_and_groups
 
     def __repr__(self):
