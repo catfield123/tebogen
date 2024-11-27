@@ -6,11 +6,13 @@ class Config:
     _is_admin_bot_enabled : bool = False
     _is_google_sheets_sync_enabled : bool = False
 
-    _questions_and_groups : QuestionGroupList = []
+    _questions_and_groups : QuestionGroupList = QuestionGroupList([])
+
+
 
     def __init__(self, is_admin_bot_enabled: bool | None,
                  is_google_sheets_sync_enabled: bool | None,
-                 questions_and_groups : QuestionGroupList = []
+                 questions_and_groups : QuestionGroupList = QuestionGroupList([])
                  ):
         
         if is_admin_bot_enabled is not None:
