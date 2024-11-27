@@ -1,4 +1,4 @@
-from Validators import Validator
+from Validators import ValidatorsList, validators_list
 from QuestionGroupList import QuestionGroupList
 
 
@@ -7,7 +7,7 @@ class Config:
     _is_google_sheets_sync_enabled : bool = False
 
     _questions_and_groups : QuestionGroupList = QuestionGroupList([])
-
+    _validators : ValidatorsList
 
 
     def __init__(self, is_admin_bot_enabled: bool | None,
@@ -20,6 +20,7 @@ class Config:
         if is_google_sheets_sync_enabled is not None:
             self.is_google_sheets_sync_enabled = is_google_sheets_sync_enabled
         self.questions_and_groups = questions_and_groups
+        self.validators = validators_list
         
         
 
@@ -71,6 +72,22 @@ class Config:
             raise TypeError("questions_and_groups must be a QuestionGroupList")
         self._questions_and_groups = value
 
+
+    @property
+    def validators(self):
+        return self._validators
+    
+    @validators.setter
+    def validators(self, value : ValidatorsList) -> None:
+        if not isinstance(value, ValidatorsList):
+            raise TypeError("validators must be a ValidatorsList")
+        self._validators = value
+
+    def add_validator(self, name):
+        self._validators.add(name)
+
+    def remove_validator(self, name):
+        self._validators.remove(name)
 
     def __repr__(self):
         return f"Config(is_admin_bot_enabled={self._is_admin_bot_enabled}, is_google_sheets_sync_enabled={self._is_google_sheets_sync_enabled}, questions_and_groups={self._questions_and_groups})"
