@@ -17,5 +17,5 @@ classifiers = [
 ]
 
 [project.scripts]
-tebogen = "tebogen.main:main"
+tebogen = "tebogen.__main__:run"
 
