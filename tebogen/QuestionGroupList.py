@@ -109,3 +109,9 @@ class QuestionGroupList:
             else:
                 print(f"{idx}: {element.variable_name}")
                 element.questions.pretty_print(indent=2, prefix=f"{idx}.")
+
+
+    def to_dict(self):
+        return [
+                item.to_dict() for item in self._questions_and_groups
+            ]

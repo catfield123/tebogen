@@ -1,18 +1,21 @@
 from Validators import ValidatorsList, validators_list
 from QuestionGroupList import QuestionGroupList
+import json
 
+from ConfigJSONEncoder import ConfigJSONEncoder
 
-class Config:
+class ConfigController:
     _is_admin_bot_enabled : bool = False
     _is_google_sheets_sync_enabled : bool = False
 
-    _questions_and_groups : QuestionGroupList = QuestionGroupList([])
+    _questions_and_groups : QuestionGroupList
     _validators : ValidatorsList
 
 
     def __init__(self, is_admin_bot_enabled: bool | None,
                  is_google_sheets_sync_enabled: bool | None,
-                 questions_and_groups : QuestionGroupList = QuestionGroupList([])
+                 questions_and_groups : QuestionGroupList = QuestionGroupList([]),
+                 validators : ValidatorsList = validators_list
                  ):
         
         if is_admin_bot_enabled is not None:
@@ -20,7 +23,31 @@ class Config:
         if is_google_sheets_sync_enabled is not None:
             self.is_google_sheets_sync_enabled = is_google_sheets_sync_enabled
         self.questions_and_groups = questions_and_groups
-        self.validators = validators_list
+        self.validators = validators
+
+    @classmethod
+    def load_from_file(cls, filename = 'tebogen_config.json'):
+        with open(filename, 'r') as file:
+            data = json.load(file)
+        return cls(**data)
+    
+
+    def to_dict(self):
+        return {
+            "is_admin_bot_enabled": self.is_admin_bot_enabled,
+            "is_google_sheets_sync_enabled": self.is_google_sheets_sync_enabled,
+            "questions_and_groups": self.questions_and_groups.to_dict(),
+            "validators": self.validators.to_dict(),
+        }
+
+    def save_to_file(self, filename = 'tebogen_config.json'):
+        with open(filename, 'w', encoding='utf-8') as file:
+            json.dump(self.to_dict(), 
+                      file, indent=4, 
+                      cls=ConfigJSONEncoder, 
+                      ensure_ascii=False
+                      )
+        
         
         
 

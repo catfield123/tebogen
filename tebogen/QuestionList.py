@@ -70,3 +70,6 @@ class QuestionList:
     def pretty_print(self, indent : int = 0, prefix : str = ""):
         for idx, question in enumerate(self._questions):
             print("  " * indent + f"{prefix}{idx}: {str(question.variable_name)}")
+
+    def to_dict(self):
+        return {"questions": [q.to_dict() for q in self._questions]}

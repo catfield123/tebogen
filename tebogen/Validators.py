@@ -13,17 +13,34 @@ class DateFormat(Enum):
 class Validator:
     name: str
 
+    def to_dict(self):
+        return {"name": self.name}
+
 @dataclass
 class IntegerValidator(Validator):
     name = "integer_validator"
     min_value: int | None = None
     max_value: int | None = None
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "min_value": self.min_value,
+            "max_value": self.max_value,
+        }
+
 @dataclass
 class FloatValidator(Validator):
     name = "float_validator"
     min_value: float | None = None
     max_value: float | None = None
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "min_value": self.min_value,
+            "max_value": self.max_value,
+        }
 
 
 @dataclass
@@ -36,6 +53,13 @@ class TextValidator(Validator):
         self.min_length = min_length
         self.max_length = max_length
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "min_length": self.min_length,
+            "max_length": self.max_length,
+        }
+
 @dataclass
 class DateValidator(Validator):
     name = "date_validator"
@@ -44,16 +68,32 @@ class DateValidator(Validator):
     def __init__(self, date_format : DateFormat = DateFormat.DD_MM_YYYY):
         self.date_format = date_format
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "date_format": self.date_format.value,
+        }
+
 
 class EmailValidator(Validator):
     name = "email_validator"
     def __init__(self,*args, **kwargs):
         pass
 
+    def to_dict(self):
+        return {
+            "name": self.name
+        }
+
 class PhoneNumberValidator(Validator):
     name = "phone_validator"
     def __init__(self,*args, **kwargs):
         pass
+
+    def to_dict(self):
+        return {
+            "name": self.name
+        }
 
 
 class ValidatorsList:
@@ -109,6 +149,13 @@ class ValidatorsList:
             return self.validators[index]
         else:
             raise TypeError("Index must be a string (validator name) or an int (list index)")
+        
+    def to_dict(self):
+
+        
+        return {
+            "validators": [{"name": validator.name} for validator in self.validators if validator.name not in ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']],
+        }
 
 validators_list = ValidatorsList([
     IntegerValidator,
@@ -124,4 +171,10 @@ def custom_validator(validator_name: str):
         name = validator_name
         def __init__(self,*args, **kwargs):
             pass
+
+        def to_dict(self):
+            return {
+                "name": self.name
+            }
+
     return CustomValidator

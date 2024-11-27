@@ -5,7 +5,7 @@ from Validators import Validator
 class Question:
     _name : str
     _variable_name : str
-    _validator : Validator | None = None
+    _validator : Validator | None
 
     def __init__(self, name: str, variable_name: str, validator: Validator | None = None):
         self.name = name
@@ -46,7 +46,14 @@ class Question:
         return self._validator
     
     @validator.setter
-    def validator(self, value : Validator):
-        if not isinstance(value, Validator) and value is not None:
+    def validator(self, value : Validator | None):
+        if not isinstance(value, Validator) and  value is not None:
             raise TypeError("validator must be a Validator instance")
         self._validator = value
+
+    def to_dict(self):
+        return {
+            "name": self._name,
+            "variable_name": self._variable_name,
+            "validator": self._validator.to_dict()
+        }

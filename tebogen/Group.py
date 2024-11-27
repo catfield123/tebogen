@@ -45,3 +45,10 @@ class Group:
     @property
     def questions(self) -> QuestionList:
         return self._questions
+
+    def to_dict(self):
+        return {
+            "name": self._name,
+            "variable_name": self._variable_name,
+            "questions": [q.to_dict() for q in self._questions],
+        }
