@@ -12,7 +12,7 @@ class Colors:
     GREEN_BLACK = None
 
     @staticmethod
-    def init_colors():
+    def init_colors() -> None:
         curses.init_pair(1, Colors.WHITE, Colors.BLACK)
         curses.init_pair(2, Colors.BLACK, Colors.WHITE)
         curses.init_pair(3, Colors.RED, Colors.BLACK)
