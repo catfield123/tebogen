@@ -35,42 +35,25 @@ def generate(config_filename):
 
 
 def run():
-    # Основной парсер
     parser = argparse.ArgumentParser(
         description="Tebogen: a powerful tool for creating data-collecting Telegram bots."
     )
     parser.add_argument(
+        "command",
+        nargs="?", 
+        choices=["configure", "generate"],
+        default="configure",
+        help="Command to run (default: configure)."
+    )
+    parser.add_argument(
         "-f", "--file",
         type=str,
-        default=None,  # Позже обработаем значение по умолчанию
-        help="Path to configuration file."
-    )
-
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
-
-    # Команда configure
-    configure_parser = subparsers.add_parser(
-        "configure",
-        help="Run configuration wizard."
-    )
-
-    # Команда generate
-    generate_parser = subparsers.add_parser(
-        "generate",
-        help="Generate data based on configuration."
+        default="tebogen_config.json",
+        help="Path to configuration file (default: tebogen_config.json)."
     )
 
     args = parser.parse_args()
 
-    # Логика определения команды по умолчанию
-    if args.command is None:
-        args.command = "configure"
-
-    # Устанавливаем значение по умолчанию для файла
-    if args.file is None:
-        args.file = "tebogen_config.json"
-
-    # Выполняем команды
     if args.command == "configure":
         configure(args.file)
     elif args.command == "generate":
