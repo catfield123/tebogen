@@ -65,6 +65,10 @@ class Question:
         validator = None
         if data.get("validator"):
             validator = ValidatorFactory.create(data["validator"])
+        if not data.get('name'):
+            raise ValueError(f"Unable to parse question name. Provided data: {data}")
+        if not data.get('variable_name'):
+            raise ValueError(f"Unable to parse question variable name. Provided data: {data}")
         return cls(
             name=data["name"],
             variable_name=data["variable_name"],

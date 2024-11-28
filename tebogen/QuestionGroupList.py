@@ -118,11 +118,17 @@ class QuestionGroupList:
     
     @classmethod
     def from_dict(cls, data: dict):
+        questions_and_groups = []
+        for item in data:
+            if "questions" in item:
+                questions_and_groups.append(Group.from_dict(item))
+            else:
+                try:
+                    questions_and_groups.append(Question.from_dict(item))
+                except:
+                    raise ValueError(f"Unable to parse question: {item}")
         obj = cls(
-                [
-                Question.from_dict(item) if "questions" not in item else Group.from_dict(item)
-                for item in data
-                ]
+                questions_and_groups
         )
         
         return obj

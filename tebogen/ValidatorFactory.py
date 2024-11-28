@@ -3,6 +3,8 @@ from Validators import DateValidator, FloatValidator, IntegerValidator, TextVali
 class ValidatorFactory:
     @staticmethod
     def create(data: dict):
+        if not data.get('name'):
+            raise ValueError(f"Unable to parse validator name. Provided data: {data}")
         if data["name"] == "integer_validator":
             return IntegerValidator(
                 min_value=data.get("min_value"),

@@ -54,13 +54,12 @@ class ConfigController:
         with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
         obj = cls(
-                data["is_admin_bot_enabled"],
-                data["is_google_sheets_sync_enabled"],
+                data["is_admin_bot_enabled"] if data.get("is_admin_bot_enabled") is not None else False,
+                data["is_google_sheets_sync_enabled"] if data.get("is_google_sheets_sync_enabled") is not None else False,
                 QuestionGroupList.from_dict(data["questions_and_groups"])
 
             )
         
-        print(data)
         for validator in data["validators"]:
             obj.add_validator(validator.get("name"))
         return obj
