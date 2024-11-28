@@ -159,7 +159,7 @@ class ValidatorsList:
             raise TypeError("Index must be a string (validator name) or an int (list index)")
         
     def to_dict(self):
-        return {"name": validator.name for validator in self.validators if validator.name not in ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']},
+        return [{"name": validator.name} for validator in self.validators if validator.name not in ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']]
 
 validators_list = ValidatorsList([
     IntegerValidator,
