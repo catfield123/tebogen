@@ -17,6 +17,7 @@ class MainMenuScreen(BaseScreen):
 
     def display(self):
         self.stdscr.clear()
+        curses.curs_set(0)
         self.stdscr.addstr(0, 0, "Main Menu")
         for idx, item in enumerate(self.menu_items):
             if idx == self.selected_idx:
@@ -32,10 +33,10 @@ class MainMenuScreen(BaseScreen):
             self.selected_idx += 1
         elif key in [curses.KEY_ENTER, 10, 13]:
             if self.selected_idx == 0:  # Settings
-                self.navigation_controller.navigate_to(SettingsMenuScreen(self.stdscr, self.navigation_controller))
+                self.navigation_controller.navigate_to(SettingsMenuScreen(self.stdscr, self.navigation_controller, self.config_controller))
             elif self.selected_idx == 1:  # Edit Questions
-                self.navigation_controller.navigate_to(QuestionsListScreen(self.stdscr, self.navigation_controller))
+                self.navigation_controller.navigate_to(QuestionsListScreen(self.stdscr, self.navigation_controller, self.config_controller))
             elif self.selected_idx == 2:  # Edit Validators
-                self.navigation_controller.navigate_to(ValidatorsListScreen(self.stdscr, self.navigation_controller))
+                self.navigation_controller.navigate_to(ValidatorsListScreen(self.stdscr, self.navigation_controller, self.config_controller))
             elif self.selected_idx == 3:  # Exit
                 self.navigation_controller.exit_app()
