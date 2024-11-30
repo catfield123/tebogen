@@ -1,9 +1,11 @@
 import curses
+from ConfigController import ConfigController
+from ui.NavigationController import NavigationController
 from ui.BaseScreen import BaseScreen
 
 class QuestionsListScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller):
-        super().__init__(stdscr, navigation_controller)
+    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
+        super().__init__(stdscr, navigation_controller, config_controller)
         self.question_list = ["Question 1", "Question 2", "Question 3"]
         self.selected_idx = 0
 

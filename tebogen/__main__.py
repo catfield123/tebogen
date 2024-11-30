@@ -10,6 +10,7 @@ from ConfigController import ConfigController
 def main(stdscr, config_filename : str):
     Colors.init_colors()
     
+    
     try:
         config_controller = ConfigController.load_from_file(config_filename)
     except:
@@ -21,9 +22,9 @@ def main(stdscr, config_filename : str):
     stdscr.refresh()
     config_controller.save_to_file()
 
-    # navigation_controller = NavigationController(stdscr)
-    # main_menu_screen = MainMenuScreen(stdscr, navigation_controller)
-    # navigation_controller.navigate_to(main_menu_screen)
+    navigation_controller = NavigationController(stdscr)
+    main_menu_screen = MainMenuScreen(stdscr, navigation_controller, config_controller)
+    navigation_controller.navigate_to(main_menu_screen)
 
     stdscr.getch()
 def configure(config_filename):

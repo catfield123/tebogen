@@ -1,14 +1,17 @@
 import curses
 from ui.BaseScreen import BaseScreen
 
+from ConfigController import ConfigController
+from ui.NavigationController import NavigationController
+
 from ui.screens.settings.SettingsMenuScreen import SettingsMenuScreen
 from ui.screens.questions.QuestionsListScreen import QuestionsListScreen
 from ui.screens.validators.ValidatorsListScreen import ValidatorsListScreen
 
 
 class MainMenuScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller):
-        super().__init__(stdscr, navigation_controller)
+    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
+        super().__init__(stdscr, navigation_controller, config_controller)
         self.menu_items = ["Settings", "Edit Questions", "Edit Validators", "Exit"]
         self.selected_idx = 0
 

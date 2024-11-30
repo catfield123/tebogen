@@ -1,7 +1,11 @@
+from ConfigController import ConfigController
+from ui.NavigationController import NavigationController
+
 class BaseScreen:
-    def __init__(self, stdscr, navigation_controller):
+    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
         self.stdscr = stdscr
         self.navigation_controller = navigation_controller
+        self.config_controller = config_controller
 
     def display(self):
         raise NotImplementedError("display() must be implemented in subclasses")

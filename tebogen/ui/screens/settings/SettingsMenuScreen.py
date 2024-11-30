@@ -1,14 +1,17 @@
+from ui.NavigationController import NavigationController
+from ConfigController import ConfigController
 from ui.BaseScreen import BaseScreen
 import curses
 
 class SettingsMenuScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller):
-        super().__init__(stdscr, navigation_controller)
+    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
+        super().__init__(stdscr, navigation_controller, config_controller=config_controller)
         self.menu_items = ["Setting 1", "Setting 2", "Setting 3"]
         self.selected_idx = 0
 
     def display(self):
         self.stdscr.clear()
+        curses.curs_set(0)
         self.stdscr.addstr(0, 0, "Settings")
         for idx, item in enumerate(self.menu_items):
             if idx == self.selected_idx:
