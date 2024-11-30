@@ -13,5 +13,5 @@ class BaseScreen:
     def handle_input(self, key):
         raise NotImplementedError("handle_input() must be implemented in subclasses")
 
-    def navigate_back(self):
-        self.navigation_controller.go_back()
+    def navigate_back(self, amount : int= 1):
+        self.navigation_controller.go_back(amount=amount)
