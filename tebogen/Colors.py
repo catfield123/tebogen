@@ -5,11 +5,13 @@ class Colors:
     RED = curses.COLOR_RED
     GREEN = curses.COLOR_GREEN
     BLACK = curses.COLOR_BLACK
+    YELLOW = curses.COLOR_YELLOW
 
     WHITE_BLACK = None
     BLACK_WHITE = None
     RED_BLACK = None
     GREEN_BLACK = None
+    YELLOW_BLACK = None
 
     @staticmethod
     def init_colors() -> None:
@@ -17,8 +19,11 @@ class Colors:
         curses.init_pair(2, Colors.BLACK, Colors.WHITE)
         curses.init_pair(3, Colors.RED, Colors.BLACK)
         curses.init_pair(4, Colors.GREEN, Colors.BLACK)
+        curses.init_pair(5, Colors.YELLOW, Colors.BLACK)
 
         Colors.WHITE_BLACK = curses.color_pair(1)
         Colors.BLACK_WHITE = curses.color_pair(2)
         Colors.RED_BLACK = curses.color_pair(3)
         Colors.GREEN_BLACK = curses.color_pair(4)
+        Colors.YELLOW_BLACK = curses.color_pair(5)
+
