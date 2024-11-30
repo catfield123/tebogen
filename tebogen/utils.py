@@ -1,6 +1,7 @@
 import re
 import keyword
 
+from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
 
 def is_valid_python_variable_name(name: str) -> bool:
     """
@@ -13,14 +14,9 @@ def is_valid_python_variable_name(name: str) -> bool:
         bool: True if the name is a valid Python variable name, False otherwise.
     """
     if not re.match(r"^[^\W\d]\w*$", name):
-        raise ValueError(
-            "variable_name must be a valid Python variable name. "
-            "It should start with a letter or an underscore and contain only alphanumeric characters or underscores."
-        )
+        raise NotValidPythonVariableNameException
     
     if keyword.iskeyword(name):
-        raise ValueError(
-            f"variable_name '{name}' is a reserved Python keyword and cannot be used as a variable name."
-        )
+        raise PythonKeywordException
     
     return True
