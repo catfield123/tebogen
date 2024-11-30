@@ -17,6 +17,14 @@ class DateFormatEnum(Enum):
 class Validator:
     name: str
 
+    def __eq__(self, value):
+        if isinstance(value, Validator):
+            return self.name == value.name
+        elif isinstance(value, str):
+            return self.name == value
+        else:
+            return False
+
     def to_dict(self):
         return {"name": self.name}
 
@@ -128,9 +136,8 @@ class ValidatorsList:
                 raise TypeError(f"{validator.__name__} must inherit from Validator")
         self._validators = validators
 
-    def add(self, name: str):
-        if name in [validator.name for validator in self.validators]:
-            raise ValidatorAlreadyExists(name)
+
+    def check_for_valid_name(self, name: str):
         try:
             is_valid_python_variable_name(name)
         except NotValidPythonVariableNameException:
@@ -145,6 +152,11 @@ class ValidatorsList:
                                              "validator_name": name
                                          }
                                          )
+    def add(self, name: str):
+        if name in [validator.name for validator in self.validators]:
+            raise ValidatorAlreadyExists(name)
+        
+        self.check_for_valid_name(name)
         
         validator = custom_validator(name)
         self.validators.append(validator)
@@ -159,6 +171,18 @@ class ValidatorsList:
         else:
             raise ValueError(f"Validator {name} not found")
 
+    def change_name(self, old_name: str, new_name: str):
+        for validator in self.validators:
+            if validator.name == new_name:
+                raise ValidatorAlreadyExists(new_name)
+            
+        self.check_for_valid_name(new_name)
+        
+        for validator in self.validators:
+            if validator.name == old_name:
+                validator.name = new_name
+                return
+        raise ValueError(f"Validator not found")
 
     def __iter__(self):
         return iter(self.validators)

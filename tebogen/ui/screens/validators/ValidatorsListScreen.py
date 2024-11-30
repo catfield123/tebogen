@@ -1,6 +1,7 @@
 from ConfigController import ConfigController
 from Validators import Validator, builtin_validators
 from Colors import Colors
+from ui.screens.validators.EditValidatorScreen import EditValidatorScreen
 from ui.screens.validators.CreateValidatorScreen import CreateValidatorScreen
 from ui.NavigationController import NavigationController
 
@@ -17,6 +18,8 @@ class ValidatorsListScreen(BaseScreen):
         self.fetch_validators(self.config_controller)
         self.stdscr.clear()
         self.stdscr.addstr(0, 0, "Validators")
+        if self.selected_idx > len(self.menu_items) - 1:
+            self.selected_idx = len(self.menu_items) - 1
         for idx, item in enumerate(self.menu_items):
             if isinstance(item, type) and issubclass(item, Validator):
                 self.stdscr.addstr(idx + 1, 0, ("> " if idx == self.selected_idx else "  ") + f"{item.name}")
@@ -43,5 +46,7 @@ class ValidatorsListScreen(BaseScreen):
                 self.navigation_controller.navigate_to(CreateValidatorScreen(self.stdscr, self.navigation_controller, self.config_controller))
             elif isinstance(self.menu_items[self.selected_idx], type) and issubclass(self.menu_items[self.selected_idx], Validator) and self.menu_items[self.selected_idx].name in builtin_validators:
                 pass # do nothing, it's a builtin validator
+            elif isinstance(self.menu_items[self.selected_idx], type) and issubclass(self.menu_items[self.selected_idx], Validator):
+                self.navigation_controller.navigate_to(EditValidatorScreen(self.stdscr, self.navigation_controller, self.config_controller, self.menu_items[self.selected_idx]))
             else:
                 self.navigate_back()

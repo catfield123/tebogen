@@ -8,6 +8,8 @@ import copy
 
 from ConfigJSONEncoder import ConfigJSONEncoder
 from ValidatorFactory import ValidatorFactory
+from Question import Question
+from Group import Group
 
 class ConfigController:
     _is_admin_bot_enabled : bool = False
@@ -141,6 +143,26 @@ class ConfigController:
 
     def remove_validator(self, name):
         self._validators.remove(name)
+        for question_or_group in self._questions_and_groups:
+            if isinstance(question_or_group, Question):
+                if question_or_group.validator == name:
+                    question_or_group.validator = None
+            elif isinstance(question_or_group, Group):
+                for question in question_or_group.questions:
+                    if question.validator == name:
+                        question.validator = None
+        self.save_to_file()
+
+    def change_validator_name(self, old_name, new_name):
+        self._validators.change_name(old_name, new_name)
+        for question_or_group in self._questions_and_groups:
+            if isinstance(question_or_group, Question):
+                if question_or_group.validator == old_name:
+                    question_or_group.validator.name = new_name
+            elif isinstance(question_or_group, Group):
+                for question in question_or_group.questions:
+                    if question.validator == old_name:
+                        question.validator.name = new_name
         self.save_to_file()
 
     def __repr__(self):

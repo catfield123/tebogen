@@ -52,12 +52,22 @@ class Question:
             raise TypeError("validator must be a Validator instance")
         self._validator = value
 
+    @validator.getter
+    def validator(self):
+        return self._validator
+
+    @validator.__eq__
+    def validator(self, other):
+        return self._validator == other
+
     def to_dict(self):
-        return {
+        result = {
             "name": self._name,
-            "variable_name": self._variable_name,
-            "validator": self._validator.to_dict()
-        }
+            "variable_name": self._variable_name,   
+        } 
+        if self.validator:
+            result["validator"] = self.validator.to_dict()
+        return result
 
 
     @classmethod
