@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum
 
+from exceptions.ValidatorExceptions import ValidatorAlreadyExists
+from utils import is_valid_python_variable_name
+from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+
 class DateFormatEnum(Enum):
     DD_MM_YYYY = "dd.mm.yyyy"
     MM_DD_YYYY = "mm.dd.yyyy"
@@ -126,12 +130,27 @@ class ValidatorsList:
 
     def add(self, name: str):
         if name in [validator.name for validator in self.validators]:
-            raise ValueError(f"Validator {name} already exists")
+            raise ValidatorAlreadyExists(name)
+        try:
+            is_valid_python_variable_name(name)
+        except NotValidPythonVariableNameException:
+            raise NotValidPythonVariableNameException(f"Validator name '{name}' is not a valid Python variable name. It should start with a letter or an underscore and contain only alphanumeric characters or underscores.",
+                                                      details= {
+                                                          "validator_name": name
+                                                      }   
+                                                      )
+        except PythonKeywordException:
+            raise PythonKeywordException(f"Validator name '{name}' is a reserved Python keyword and cannot be used.",
+                                         details= {
+                                             "validator_name": name
+                                         }
+                                         )
+        
         validator = custom_validator(name)
         self.validators.append(validator)
     
     def remove(self, name: str):
-        if name in ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']:
+        if name in builtin_validators:
             raise ValueError(f"Cannot remove built-in validator {name}")
         for validator in self.validators:
             if validator.name == name:
@@ -159,7 +178,10 @@ class ValidatorsList:
             raise TypeError("Index must be a string (validator name) or an int (list index)")
         
     def to_dict(self):
-        return [{"name": validator.name} for validator in self.validators if validator.name not in ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']]
+        return [{"name": validator.name} for validator in self.validators if validator.name not in builtin_validators]
+
+
+builtin_validators = ['integer_validator', 'float_validator', 'text_validator', 'date_validator', 'email_validator', 'phone_validator']
 
 validators_list = ValidatorsList([
     IntegerValidator,
