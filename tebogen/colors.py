@@ -1,5 +1,6 @@
 import curses
 
+
 class Colors:
     WHITE = curses.COLOR_WHITE
     RED = curses.COLOR_RED
@@ -30,4 +31,3 @@ class Colors:
         Colors.GREEN_BLACK = curses.color_pair(4)
         Colors.YELLOW_BLACK = curses.color_pair(5)
         Colors.BLUE_BLACK = curses.color_pair(6)
-

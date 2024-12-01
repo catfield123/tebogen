@@ -1,16 +1,20 @@
 import curses
-from tebogen.ui.BaseScreen import BaseScreen
 
-from tebogen.ConfigController import ConfigController
+from tebogen.config_controller import ConfigController
+from tebogen.ui.base_screen import BaseScreen
 from tebogen.ui.NavigationController import NavigationController
-
+from tebogen.ui.screens.questions.questions_list_screen import QuestionsListScreen
 from tebogen.ui.screens.settings.SettingsMenuScreen import SettingsMenuScreen
-from tebogen.ui.screens.questions.QuestionsListScreen import QuestionsListScreen
-from tebogen.ui.screens.validators.ValidatorsListScreen import ValidatorsListScreen
+from tebogen.ui.screens.validators.validators_list_screen import ValidatorsListScreen
 
 
 class MainMenuScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
+    def __init__(
+        self,
+        stdscr,
+        navigation_controller: NavigationController,
+        config_controller: ConfigController,
+    ):
         super().__init__(stdscr, navigation_controller, config_controller)
         self.menu_items = ["Settings", "Edit Questions", "Edit Validators", "Exit"]
         self.selected_idx = 0
@@ -33,10 +37,22 @@ class MainMenuScreen(BaseScreen):
             self.selected_idx += 1
         elif key in [curses.KEY_ENTER, 10, 13]:
             if self.selected_idx == 0:  # Settings
-                self.navigation_controller.navigate_to(SettingsMenuScreen(self.stdscr, self.navigation_controller, self.config_controller))
+                self.navigation_controller.navigate_to(
+                    SettingsMenuScreen(
+                        self.stdscr, self.navigation_controller, self.config_controller
+                    )
+                )
             elif self.selected_idx == 1:  # Edit Questions
-                self.navigation_controller.navigate_to(QuestionsListScreen(self.stdscr, self.navigation_controller, self.config_controller))
+                self.navigation_controller.navigate_to(
+                    QuestionsListScreen(
+                        self.stdscr, self.navigation_controller, self.config_controller
+                    )
+                )
             elif self.selected_idx == 2:  # Edit Validators
-                self.navigation_controller.navigate_to(ValidatorsListScreen(self.stdscr, self.navigation_controller, self.config_controller))
+                self.navigation_controller.navigate_to(
+                    ValidatorsListScreen(
+                        self.stdscr, self.navigation_controller, self.config_controller
+                    )
+                )
             elif self.selected_idx == 3:  # Exit
                 self.navigation_controller.exit_app()

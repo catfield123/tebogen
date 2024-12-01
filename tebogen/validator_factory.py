@@ -1,9 +1,17 @@
-from tebogen.validators import DateValidator, FloatValidator, IntegerValidator, TextValidator, Validator, DateFormatEnum
+from tebogen.validators import (
+    DateFormatEnum,
+    DateValidator,
+    FloatValidator,
+    IntegerValidator,
+    TextValidator,
+    Validator,
+)
+
 
 class ValidatorFactory:
     @staticmethod
     def create(data: dict):
-        if not data.get('name'):
+        if not data.get("name"):
             raise ValueError(f"Unable to parse validator name. Provided data: {data}")
         if data["name"] == "integer_validator":
             return IntegerValidator(
@@ -21,8 +29,6 @@ class ValidatorFactory:
                 max_length=data.get("max_length"),
             )
         elif data["name"] == "date_validator":
-            return DateValidator(
-                date_format=DateFormatEnum(data.get("date_format"))
-            )
+            return DateValidator(date_format=DateFormatEnum(data.get("date_format")))
         else:
             return Validator(name=data["name"])

@@ -1,8 +1,14 @@
-from tebogen.ConfigController import ConfigController
+from tebogen.config_controller import ConfigController
 from tebogen.ui.NavigationController import NavigationController
 
+
 class BaseScreen:
-    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
+    def __init__(
+        self,
+        stdscr,
+        navigation_controller: NavigationController,
+        config_controller: ConfigController,
+    ):
         self.stdscr = stdscr
         self.navigation_controller = navigation_controller
         self.config_controller = config_controller
@@ -13,5 +19,5 @@ class BaseScreen:
     def handle_input(self, key):
         raise NotImplementedError("handle_input() must be implemented in subclasses")
 
-    def navigate_back(self, amount : int= 1):
+    def navigate_back(self, amount: int = 1):
         self.navigation_controller.go_back(amount=amount)

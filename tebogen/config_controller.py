@@ -1,41 +1,38 @@
-from tebogen.validators import ValidatorsList, validators_list
-from tebogen.QuestionGroupList import QuestionGroupList
+import copy
 import json
-
 import os
 
-import copy
+from tebogen.config_json_encoder import ConfigJSONEncoder
+from tebogen.group import Group
+from tebogen.question import Question
+from tebogen.question_group_list import QuestionGroupList
+from tebogen.validators import ValidatorsList, validators_list
 
-from tebogen.ConfigJSONEncoder import ConfigJSONEncoder
-from tebogen.ValidatorFactory import ValidatorFactory
-from tebogen.Question import Question
-from tebogen.Group import Group
 
 class ConfigController:
-    _is_admin_bot_enabled : bool = False
-    _is_google_sheets_sync_enabled : bool = False
+    _is_admin_bot_enabled: bool = False
+    _is_google_sheets_sync_enabled: bool = False
 
-    _questions_and_groups : QuestionGroupList = QuestionGroupList([])
-    _validators : ValidatorsList = copy.deepcopy(validators_list)
-    _config_filename : str
+    _questions_and_groups: QuestionGroupList = QuestionGroupList([])
+    _validators: ValidatorsList = copy.deepcopy(validators_list)
+    _config_filename: str
 
-
-    def __init__(self, is_admin_bot_enabled: bool | None,
-                 is_google_sheets_sync_enabled: bool | None,
-                 questions_and_groups : QuestionGroupList = QuestionGroupList([]),
-                 validators : ValidatorsList = validators_list,
-                 config_filename : str = 'tebogen_config.json'
-                 ):
+    def __init__(
+        self,
+        is_admin_bot_enabled: bool | None,
+        is_google_sheets_sync_enabled: bool | None,
+        questions_and_groups: QuestionGroupList = QuestionGroupList([]),
+        validators: ValidatorsList = validators_list,
+        config_filename: str = "tebogen_config.json",
+    ):
         self._config_filename = config_filename
-        
+
         if is_admin_bot_enabled is not None:
             self.is_admin_bot_enabled = is_admin_bot_enabled
         if is_google_sheets_sync_enabled is not None:
             self.is_google_sheets_sync_enabled = is_google_sheets_sync_enabled
         self.questions_and_groups = questions_and_groups
         self.validators = validators
-
-    
 
     def to_dict(self):
         return {
@@ -46,31 +43,39 @@ class ConfigController:
         }
 
     def save_to_file(self):
-        with open(self._config_filename, 'w', encoding='utf-8') as file:
-            json.dump(self.to_dict(), 
-                      file, indent=4, 
-                      cls=ConfigJSONEncoder, 
-                      ensure_ascii=False
-                      )
-        
+        with open(self._config_filename, "w", encoding="utf-8") as file:
+            json.dump(
+                self.to_dict(),
+                file,
+                indent=4,
+                cls=ConfigJSONEncoder,
+                ensure_ascii=False,
+            )
+
     @classmethod
     def load_from_file(cls, config_filename="tebogen_config.json"):
         if not os.path.isfile(config_filename):
-            return cls(False, False, config_filename = config_filename)
+            return cls(False, False, config_filename=config_filename)
         with open(config_filename, "r", encoding="utf-8") as file:
             data = json.load(file)
         obj = cls(
-                data["is_admin_bot_enabled"] if data.get("is_admin_bot_enabled") is not None else False,
-                data["is_google_sheets_sync_enabled"] if data.get("is_google_sheets_sync_enabled") is not None else False,
-                QuestionGroupList.from_dict(data["questions_and_groups"]),
-                config_filename=config_filename
+            (
+                data["is_admin_bot_enabled"]
+                if data.get("is_admin_bot_enabled") is not None
+                else False
+            ),
+            (
+                data["is_google_sheets_sync_enabled"]
+                if data.get("is_google_sheets_sync_enabled") is not None
+                else False
+            ),
+            QuestionGroupList.from_dict(data["questions_and_groups"]),
+            config_filename=config_filename,
+        )
 
-            )
-        
         for validator in data["validators"]:
             obj.add_validator(validator.get("name"))
         return obj
-        
 
     def move_qustion_or_group_up(self, variable_name: str) -> int:
         shift = self.questions_and_groups.move_up(variable_name)
@@ -85,9 +90,9 @@ class ConfigController:
     @property
     def is_admin_bot_enabled(self):
         return self._is_admin_bot_enabled
-    
+
     @is_admin_bot_enabled.setter
-    def is_admin_bot_enabled(self, value : bool) -> None:
+    def is_admin_bot_enabled(self, value: bool) -> None:
         """
         Sets the value of the admin bot enabled flag.
 
@@ -101,13 +106,13 @@ class ConfigController:
             raise TypeError("is_admin_bot_enabled must be a boolean")
         self._is_admin_bot_enabled = value
         self.save_to_file()
-    
+
     @property
     def is_google_sheets_sync_enabled(self):
         return self._is_google_sheets_sync_enabled
-    
+
     @is_google_sheets_sync_enabled.setter
-    def is_google_sheets_sync_enabled(self, value : bool) -> None:
+    def is_google_sheets_sync_enabled(self, value: bool) -> None:
         """
         Sets the value of the Google Sheets sync enabled flag.
 
@@ -125,21 +130,20 @@ class ConfigController:
     @property
     def questions_and_groups(self):
         return self._questions_and_groups
-    
+
     @questions_and_groups.setter
-    def questions_and_groups(self, value : QuestionGroupList) -> None:
+    def questions_and_groups(self, value: QuestionGroupList) -> None:
         if not isinstance(value, QuestionGroupList):
             raise TypeError("questions_and_groups must be a QuestionGroupList")
         self._questions_and_groups = value
         self.save_to_file()
 
-
     @property
     def validators(self):
         return self._validators
-    
+
     @validators.setter
-    def validators(self, value : ValidatorsList) -> None:
+    def validators(self, value: ValidatorsList) -> None:
         if not isinstance(value, ValidatorsList):
             raise TypeError("validators must be a ValidatorsList")
         self._validators = copy.deepcopy(value)
@@ -174,12 +178,12 @@ class ConfigController:
         self.save_to_file()
 
     def __repr__(self):
-        return f"Config(is_admin_bot_enabled={self._is_admin_bot_enabled}, is_google_sheets_sync_enabled={self._is_google_sheets_sync_enabled}, questions_and_groups={self._questions_and_groups})"
-    
+        return (f"Config(is_admin_bot_enabled={self._is_admin_bot_enabled}, "
+                f"is_google_sheets_sync_enabled={self._is_google_sheets_sync_enabled}, "
+                f"questions_and_groups={self._questions_and_groups})")
+
     def pretty_print(self):
         print(f"is_admin_bot_enabled: {self._is_admin_bot_enabled}")
         print(f"is_google_sheets_sync_enabled: {self._is_google_sheets_sync_enabled}\n")
-        
-        self._questions_and_groups.pretty_print()
-    
 
+        self._questions_and_groups.pretty_print()

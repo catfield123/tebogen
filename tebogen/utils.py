@@ -1,7 +1,11 @@
-import re
 import keyword
+import re
 
-from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+from tebogen.exceptions.common import (
+    NotValidPythonVariableNameException,
+    PythonKeywordException,
+)
+
 
 def is_valid_python_variable_name(name: str) -> bool:
     """
@@ -15,8 +19,8 @@ def is_valid_python_variable_name(name: str) -> bool:
     """
     if not re.match(r"^[^\W\d]\w*$", name):
         raise NotValidPythonVariableNameException
-    
+
     if keyword.iskeyword(name):
         raise PythonKeywordException
-    
+
     return True

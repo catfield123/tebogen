@@ -1,19 +1,23 @@
-from tebogen.Question import Question
+from tebogen.question import Question
 
 
 class QuestionList:
-    _questions : list[Question]
+    _questions: list[Question]
 
-    def __init__(self, questions : list[Question] = []):
-        self._questions = questions
+    def __init__(self, questions: list[Question] | None = None):
+        if questions is None:
+            self._questions = []
+        else:
+            self._questions = questions
 
-    def add(self, question : Question, index : int | None = None) -> None:
+    def add(self, question: Question, index: int | None = None) -> None:
         """
         Adds a question to the question list at the given index.
 
         Args:
             question (Question): The question to be added.
-            index (int, optional): The index to insert the question at. If not provided, the question is appended to the end of the list.
+            index (int, optional): The index to insert the question at.
+            If not provided, the question is appended to the end of the list.
         """
         for q in self._questions:
             if q == question:
@@ -25,7 +29,7 @@ class QuestionList:
                 raise IndexError("Index out of range")
             self._questions.insert(index, question)
 
-    def move(self, old_index : int, new_index : int) -> None:
+    def move(self, old_index: int, new_index: int) -> None:
         """
         Moves a question from the old index to the new index in the question list.
 
@@ -40,8 +44,7 @@ class QuestionList:
         element = self._questions.pop(old_index)
         self._questions.insert(new_index, element)
 
-
-    def pop(self, index : int) -> Question:
+    def pop(self, index: int) -> Question:
         """
         Removes a question from the question list at the given index.
 
@@ -52,35 +55,38 @@ class QuestionList:
             raise IndexError("Index out of range")
         return self._questions.pop(index)
 
-    def swap(self, index1 : int, index2 : int) -> None:
+    def swap(self, index1: int, index2: int) -> None:
         if index1 < 0 or index1 >= len(self._questions):
             raise IndexError("Index out of range")
         if index2 < 0 or index2 >= len(self._questions):
             raise IndexError("Index out of range")
-        self._questions[index1], self._questions[index2] = self._questions[index2], self._questions[index1]
+        self._questions[index1], self._questions[index2] = (
+            self._questions[index2],
+            self._questions[index1],
+        )
 
     def __iter__(self):
         """Support iteration (e.g., for question in questions)"""
         return iter(self._questions)
-    
+
     def __getitem__(self, index):
         """Support indexing"""
         return self._questions[index]
-    
+
     def __len__(self):
         """Support len() function"""
         return len(self._questions)
 
     def __repr__(self):
         return repr(self._questions)
-    
-    def pretty_print(self, indent : int = 0, prefix : str = ""):
+
+    def pretty_print(self, indent: int = 0, prefix: str = ""):
         for idx, question in enumerate(self._questions):
             print("  " * indent + f"{prefix}{idx}: {str(question.variable_name)}")
 
     def to_dict(self):
         return {"questions": [q.to_dict() for q in self._questions]}
-    
+
     @classmethod
     def from_dict(cls, data: dict):
         questions = [Question.from_dict(q) for q in data["questions"]]

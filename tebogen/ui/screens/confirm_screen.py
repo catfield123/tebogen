@@ -1,18 +1,22 @@
-import textwrap
-from tebogen.ConfigController import ConfigController
-from tebogen.validators import Validator, builtin_validators
-from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
-from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
-from tebogen.ui.screens.validators import CreateValidatorScreen
-from tebogen.ui.NavigationController import NavigationController
-from tebogen.Colors import Colors
-
-from tebogen.ui.BaseScreen import BaseScreen
 import curses
+import textwrap
+
+from tebogen.colors import Colors
+from tebogen.config_controller import ConfigController
+from tebogen.ui.base_screen import BaseScreen
+from tebogen.ui.NavigationController import NavigationController
 
 
 class ConfirmScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController, confirm_callback, title: str, message: str | None = None):
+    def __init__(
+        self,
+        stdscr,
+        navigation_controller: NavigationController,
+        config_controller: ConfigController,
+        confirm_callback,
+        title: str,
+        message: str | None = None,
+    ):
         super().__init__(stdscr, navigation_controller, config_controller)
         self.selected_idx = 0
         self.title = title
@@ -36,13 +40,18 @@ class ConfirmScreen(BaseScreen):
         cancel_row = message_end_row + 1
         confirm_row = message_end_row + 2
 
-        self.stdscr.addstr(cancel_row, 0, ("> " if self.selected_idx == 0 else "  ") + "[Cancel]")
-        self.stdscr.addstr(confirm_row, 0, ("> " if self.selected_idx == 1 else "  ") + "[Confirm]", Colors.RED_BLACK)
+        self.stdscr.addstr(
+            cancel_row, 0, ("> " if self.selected_idx == 0 else "  ") + "[Cancel]"
+        )
+        self.stdscr.addstr(
+            confirm_row,
+            0,
+            ("> " if self.selected_idx == 1 else "  ") + "[Confirm]",
+            Colors.RED_BLACK,
+        )
 
         curses.curs_set(0)
         self.stdscr.refresh()
-
-
 
     def handle_input(self, key):
 

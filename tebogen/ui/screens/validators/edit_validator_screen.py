@@ -1,38 +1,57 @@
-from tebogen.ConfigController import ConfigController
-from tebogen.validators import Validator, builtin_validators
-from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
-from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
-from tebogen.ui.screens.ConfirmScreen import ConfirmScreen
-from tebogen.ui.screens.validators import CreateValidatorScreen
-from tebogen.ui.NavigationController import NavigationController
-from tebogen.Colors import Colors
-
-from tebogen.ui.BaseScreen import BaseScreen
 import curses
+
+from tebogen.colors import Colors
+from tebogen.config_controller import ConfigController
+from tebogen.exceptions.common import (
+    NotValidPythonVariableNameException,
+    PythonKeywordException,
+)
+from tebogen.exceptions.validator_exceptions import ValidatorAlreadyExists
+from tebogen.ui.base_screen import BaseScreen
+from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.screens.confirm_screen import ConfirmScreen
+from tebogen.validators import Validator
 
 
 class EditValidatorScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController, validator: Validator):
+    def __init__(
+        self,
+        stdscr,
+        navigation_controller: NavigationController,
+        config_controller: ConfigController,
+        validator: Validator,
+    ):
         super().__init__(stdscr, navigation_controller, config_controller)
         self.validator = validator
         self.selected_idx = 0
         self.is_typing = False
-        self.error_messages : list[str] = []
+        self.error_messages: list[str] = []
         self.text_field = self.validator.name
 
     def display(self):
         self.stdscr.clear()
         self.stdscr.addstr(0, 0, f"Edit validator {self.validator.name}")
-        self.stdscr.addstr(1, 0, ("> " if (self.selected_idx == 0 and not self.is_typing) else "  ") + "[Enter validator name]")
+        self.stdscr.addstr(
+            1,
+            0,
+            ("> " if (self.selected_idx == 0 and not self.is_typing) else "  ")
+            + "[Enter validator name]",
+        )
 
         if self.selected_idx == 0:
             self.stdscr.addstr(1, 25, f"{self.text_field}")
         else:
             self.stdscr.addstr(1, 25, self.text_field)
 
-        self.stdscr.addstr(2, 0, ("> " if self.selected_idx == 1 else "  ") + "[Confirm]")
-        self.stdscr.addstr(3, 0, ("> " if self.selected_idx == 2 else "  ") + "[Delete validator]")
-        self.stdscr.addstr(4, 0, ("> " if self.selected_idx == 3 else "  ") + "[Cancel]")
+        self.stdscr.addstr(
+            2, 0, ("> " if self.selected_idx == 1 else "  ") + "[Confirm]"
+        )
+        self.stdscr.addstr(
+            3, 0, ("> " if self.selected_idx == 2 else "  ") + "[Delete validator]"
+        )
+        self.stdscr.addstr(
+            4, 0, ("> " if self.selected_idx == 3 else "  ") + "[Cancel]"
+        )
 
         if len(self.error_messages) > 0:
             for idx, message in enumerate(self.error_messages):
@@ -54,7 +73,7 @@ class EditValidatorScreen(BaseScreen):
                 self.text_field = self.text_field[:-1]
             elif key >= 32 and key <= 126:
                 self.text_field += chr(key)
-            return 
+            return
 
         if key == curses.KEY_UP and self.selected_idx > 0:
             self.selected_idx -= 1
@@ -69,7 +88,9 @@ class EditValidatorScreen(BaseScreen):
                     if self.validator.name == self.text_field:
                         self.navigate_back()
                     if not self.text_field == self.validator.name:
-                        self.config_controller.change_validator_name(self.validator.name, self.text_field)
+                        self.config_controller.change_validator_name(
+                            self.validator.name, self.text_field
+                        )
                         self.navigate_back()
                 except ValidatorAlreadyExists as e:
                     self.error_messages = [str(e)]
@@ -79,16 +100,19 @@ class EditValidatorScreen(BaseScreen):
                     self.error_messages = [str(e)]
             elif self.selected_idx == 2:
                 self.navigation_controller.navigate_to(
-                            ConfirmScreen(
-                                self.stdscr,
-                                self.navigation_controller,
-                                self.config_controller,
-                                confirm_callback=lambda: [
-                                    self.config_controller.remove_validator(self.validator.name),
-                                    self.navigate_back(2)
-                                ],
-                                title="Delete Validator",
-                                message=f"Are you sure you want to delete validator '{self.validator.name}'?"                                         )
-                        )
+                    ConfirmScreen(
+                        self.stdscr,
+                        self.navigation_controller,
+                        self.config_controller,
+                        confirm_callback=lambda: [
+                            self.config_controller.remove_validator(
+                                self.validator.name
+                            ),
+                            self.navigate_back(2),
+                        ],
+                        title="Delete Validator",
+                        message=f"Are you sure you want to delete validator '{self.validator.name}'?",
+                    )
+                )
             elif self.selected_idx == 3:
                 self.navigate_back()

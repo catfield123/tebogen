@@ -1,11 +1,20 @@
-from tebogen.ui.NavigationController import NavigationController
-from tebogen.ConfigController import ConfigController
-from tebogen.ui.BaseScreen import BaseScreen
 import curses
 
+from tebogen.config_controller import ConfigController
+from tebogen.ui.base_screen import BaseScreen
+from tebogen.ui.NavigationController import NavigationController
+
+
 class SettingsMenuScreen(BaseScreen):
-    def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
-        super().__init__(stdscr, navigation_controller, config_controller=config_controller)
+    def __init__(
+        self,
+        stdscr,
+        navigation_controller: NavigationController,
+        config_controller: ConfigController,
+    ):
+        super().__init__(
+            stdscr, navigation_controller, config_controller=config_controller
+        )
         self.menu_items = ["Setting 1", "Setting 2", "Setting 3"]
         self.selected_idx = 0
 
