@@ -20,7 +20,8 @@ class ValidatorsListScreen(BaseScreen):
         self.fetch_validators(self.config_controller)
         self.stdscr.clear()
         height, width = self.stdscr.getmaxyx()
-
+        if self.selected_idx >= len(self.menu_items):
+            self.selected_idx = len(self.menu_items) - 1
         visible_items = height - 2
         end_idx = self.start_idx + visible_items
 
