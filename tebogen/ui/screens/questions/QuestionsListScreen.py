@@ -19,15 +19,15 @@ class QuestionsListScreen(BaseScreen):
         self.is_moving = False
 
     def fetch_questions_and_groups(self):
-        # Наполняем self.menu_items, добавляя группы и вопросы с вложенностью
+
         self.menu_items = []
         def process_item(item, depth=0):
             if isinstance(item, Question):
-                self.menu_items.append((item, depth))  # Добавляем вопрос
+                self.menu_items.append((item, depth))
             elif isinstance(item, Group):
-                self.menu_items.append((item, depth))  # Добавляем группу
+                self.menu_items.append((item, depth))
                 for question in item:
-                    process_item(question, depth + 1)  # Увеличиваем вложенность для элементов группы
+                    process_item(question, depth + 1)
 
         for item in self.config_controller.questions_and_groups:
             process_item(item)
@@ -38,7 +38,7 @@ class QuestionsListScreen(BaseScreen):
         self.stdscr.clear()
         height, width = self.stdscr.getmaxyx()
 
-        visible_items = height - 2  # Оставляем место для заголовка
+        visible_items = height - 2
         end_idx = self.start_idx + visible_items
 
         self.stdscr.addstr(0, 0, "Questions and Groups")
@@ -69,7 +69,7 @@ class QuestionsListScreen(BaseScreen):
 
         if key == curses.KEY_ENTER or key in [10, 13]:
             self.is_moving = not self.is_moving
-            # Проверяем границы при выходе из режима перемещения
+            
             if not self.is_moving:
                 if self.selected_idx < self.start_idx:
                     self.start_idx = self.selected_idx
@@ -81,7 +81,7 @@ class QuestionsListScreen(BaseScreen):
             self.navigate_back()
 
         if not self.is_moving:
-            # Навигация без перемещения
+            
             if key == curses.KEY_UP and self.selected_idx > 0:
                 self.selected_idx -= 1
                 if self.selected_idx < self.start_idx:
@@ -92,7 +92,7 @@ class QuestionsListScreen(BaseScreen):
                     self.start_idx += 1
             self.display()
         else:
-            # Режим перемещения
+            
             if key == curses.KEY_UP:
                 try:
                     shift = self.config_controller.move_qustion_or_group_up(self.menu_items[self.selected_idx][0].variable_name)

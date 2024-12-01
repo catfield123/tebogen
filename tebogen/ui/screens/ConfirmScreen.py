@@ -32,16 +32,14 @@ class ConfirmScreen(BaseScreen):
             for i, line in enumerate(wrapped_message):
                 self.stdscr.addstr(1 + i, 0, line)
 
-        # Вычисляем позицию кнопок
         message_end_row = 1 + len(wrapped_message) if self.message else 2
         cancel_row = message_end_row + 1
         confirm_row = message_end_row + 2
 
-        # Отображаем кнопки
         self.stdscr.addstr(cancel_row, 0, ("> " if self.selected_idx == 0 else "  ") + "[Cancel]")
         self.stdscr.addstr(confirm_row, 0, ("> " if self.selected_idx == 1 else "  ") + "[Confirm]", Colors.RED_BLACK)
 
-        curses.curs_set(0)  # Скрываем курсор
+        curses.curs_set(0)
         self.stdscr.refresh()
 
 
