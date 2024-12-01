@@ -45,6 +45,12 @@ class Group:
     @property
     def questions(self) -> QuestionList:
         return self._questions
+    
+    def __iter__(self):
+        return iter(self._questions)
+    
+    def __len__(self):
+        return len(self._questions)
 
     def to_dict(self):
         return {
@@ -53,6 +59,10 @@ class Group:
             "questions": [q.to_dict() for q in self._questions],
         }
     
+
+    def swap(self, index1 : int, index2 : int) -> None:
+        self.questions.swap(index1, index2)
+
     @classmethod
     def from_dict(cls, data: dict):
         questions = [Question.from_dict(q) for q in data["questions"]]
