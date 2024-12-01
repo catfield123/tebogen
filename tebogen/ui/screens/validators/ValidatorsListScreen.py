@@ -1,5 +1,5 @@
 from tebogen.ConfigController import ConfigController
-from tebogen.Validators import Validator, builtin_validators
+from tebogen.validators import Validator, builtin_validators
 from tebogen.Colors import Colors
 from tebogen.ui.screens.validators.EditValidatorScreen import EditValidatorScreen
 from tebogen.ui.screens.validators.CreateValidatorScreen import CreateValidatorScreen

@@ -126,14 +126,14 @@ class ValidatorsList:
         return self._validators
 
     @validators.setter
-    def validators(self, validators: list[Validator]):
+    def validators(self, validators: list[type[Validator]]):
         if not isinstance(validators, list):
             raise TypeError("Validators must be a list")
         for validator in validators:
             if not isinstance(validator, type):
                 raise TypeError("Each validator must be a class")
             if not issubclass(validator, Validator):
-                raise TypeError(f"{validator.__name__} must inherit from Validator")
+                raise TypeError(f"{validator} must inherit from Validator")
         self._validators = validators
 
 

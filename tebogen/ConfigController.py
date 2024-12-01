@@ -1,4 +1,4 @@
-from tebogen.Validators import ValidatorsList, validators_list
+from tebogen.validators import ValidatorsList, validators_list
 from tebogen.QuestionGroupList import QuestionGroupList
 import json
 

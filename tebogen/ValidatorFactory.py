@@ -1,4 +1,4 @@
-from tebogen.Validators import DateValidator, FloatValidator, IntegerValidator, TextValidator, Validator, DateFormatEnum
+from tebogen.validators import DateValidator, FloatValidator, IntegerValidator, TextValidator, Validator, DateFormatEnum
 
 class ValidatorFactory:
     @staticmethod

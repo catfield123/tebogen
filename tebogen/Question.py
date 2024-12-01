@@ -1,6 +1,6 @@
 from tebogen.ValidatorFactory import ValidatorFactory
 import tebogen.utils as utils
-from tebogen.Validators import Validator
+from tebogen.validators import Validator
 
 
 class Question:

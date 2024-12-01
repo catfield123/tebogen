@@ -1,5 +1,5 @@
 from tebogen.ConfigController import ConfigController
-from tebogen.Validators import Validator, builtin_validators
+from tebogen.validators import Validator, builtin_validators
 from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
 from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
 from tebogen.ui.screens.validators import CreateValidatorScreen
