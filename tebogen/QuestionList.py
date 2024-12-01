@@ -52,6 +52,13 @@ class QuestionList:
             raise IndexError("Index out of range")
         return self._questions.pop(index)
 
+    def swap(self, index1 : int, index2 : int) -> None:
+        if index1 < 0 or index1 >= len(self._questions):
+            raise IndexError("Index out of range")
+        if index2 < 0 or index2 >= len(self._questions):
+            raise IndexError("Index out of range")
+        self._questions[index1], self._questions[index2] = self._questions[index2], self._questions[index1]
+
     def __iter__(self):
         """Support iteration (e.g., for question in questions)"""
         return iter(self._questions)
