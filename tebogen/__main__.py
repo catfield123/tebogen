@@ -3,7 +3,7 @@ import curses
 
 from tebogen.colors import Colors
 from tebogen.config_controller import ConfigController
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 from tebogen.ui.screens.main_menu_screen import MainMenuScreen
 
 

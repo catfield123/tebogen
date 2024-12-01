@@ -17,7 +17,7 @@ from tebogen.exceptions.common import (
 )
 from tebogen.exceptions.validator_exceptions import ValidatorAlreadyExists
 from tebogen.ui.base_screen import BaseScreen
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 from tebogen.ui.screens.confirm_screen import ConfirmScreen
 from tebogen.validators import Validator
 

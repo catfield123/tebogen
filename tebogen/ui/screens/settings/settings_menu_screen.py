@@ -11,7 +11,7 @@ import curses
 
 from tebogen.config_controller import ConfigController
 from tebogen.ui.base_screen import BaseScreen
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 
 
 class SettingsMenuScreen(BaseScreen):

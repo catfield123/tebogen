@@ -6,7 +6,7 @@ to define the standard methods and behaviors for all screens.
 """
 
 from tebogen.config_controller import ConfigController
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 
 
 class BaseScreen:

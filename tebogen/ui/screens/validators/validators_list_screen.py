@@ -11,7 +11,7 @@ import curses
 from tebogen.colors import Colors
 from tebogen.config_controller import ConfigController
 from tebogen.ui.base_screen import BaseScreen
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 from tebogen.ui.screens.validators.create_validator_screen import CreateValidatorScreen
 from tebogen.ui.screens.validators.edit_validator_screen import EditValidatorScreen
 from tebogen.validators import Validator, builtin_validators

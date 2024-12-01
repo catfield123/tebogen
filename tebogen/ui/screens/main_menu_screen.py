@@ -11,9 +11,9 @@ import curses
 
 from tebogen.config_controller import ConfigController
 from tebogen.ui.base_screen import BaseScreen
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 from tebogen.ui.screens.questions.questions_list_screen import QuestionsListScreen
-from tebogen.ui.screens.settings.SettingsMenuScreen import SettingsMenuScreen
+from tebogen.ui.screens.settings.settings_menu_screen import SettingsMenuScreen
 from tebogen.ui.screens.validators.validators_list_screen import ValidatorsListScreen
 
 

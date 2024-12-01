@@ -11,7 +11,7 @@ from tebogen.exceptions.question_group_list_exceptions import BoundaryReachedExc
 from tebogen.group import Group
 from tebogen.question import Question
 from tebogen.ui.base_screen import BaseScreen
-from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.navigation_controller_screen import NavigationController
 
 
 class QuestionsListScreen(BaseScreen):
