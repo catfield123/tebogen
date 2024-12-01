@@ -48,7 +48,7 @@ class QuestionsListScreen(BaseScreen):
         end_idx = self.start_idx + visible_items
 
         self.stdscr.addstr(0, 0, "Questions and Groups")
-        for idx, (item, depth) in enumerate(self.menu_items[self.start_idx: end_idx]):
+        for idx, (item, depth) in enumerate(self.menu_items[self.start_idx : end_idx]):
             actual_idx = idx + self.start_idx
 
             indent = " " * (depth * 2)

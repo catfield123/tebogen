@@ -31,7 +31,7 @@ class ValidatorsListScreen(BaseScreen):
         end_idx = self.start_idx + visible_items
 
         self.stdscr.addstr(0, 0, "Validators")
-        for idx, item in enumerate(self.menu_items[self.start_idx: end_idx]):
+        for idx, item in enumerate(self.menu_items[self.start_idx : end_idx]):
             actual_idx = idx + self.start_idx
             if isinstance(item, type) and issubclass(item, Validator):
                 self.stdscr.addstr(

@@ -178,9 +178,11 @@ class ConfigController:
         self.save_to_file()
 
     def __repr__(self):
-        return (f"Config(is_admin_bot_enabled={self._is_admin_bot_enabled}, "
-                f"is_google_sheets_sync_enabled={self._is_google_sheets_sync_enabled}, "
-                f"questions_and_groups={self._questions_and_groups})")
+        return (
+            f"Config(is_admin_bot_enabled={self._is_admin_bot_enabled}, "
+            f"is_google_sheets_sync_enabled={self._is_google_sheets_sync_enabled}, "
+            f"questions_and_groups={self._questions_and_groups})"
+        )
 
     def pretty_print(self):
         print(f"is_admin_bot_enabled: {self._is_admin_bot_enabled}")

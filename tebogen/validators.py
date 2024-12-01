@@ -148,9 +148,11 @@ class ValidatorsList:
             is_valid_python_variable_name(name)
         except NotValidPythonVariableNameException as exc:
             raise NotValidPythonVariableNameException(
-                (f"Validator name '{name}' is not a valid Python variable name. ",
-                 "It should start with a letter or an underscore and contain"
-                 " only alphanumeric characters or underscores."),
+                (
+                    f"Validator name '{name}' is not a valid Python variable name. ",
+                    "It should start with a letter or an underscore and contain"
+                    " only alphanumeric characters or underscores.",
+                ),
                 details={"validator_name": name},
             ) from exc
         except PythonKeywordException as exc:

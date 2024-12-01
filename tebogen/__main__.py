@@ -11,10 +11,7 @@ def main(stdscr, config_filename: str):
     Colors.init_colors()
     config_controller = ConfigController.load_from_file(config_filename)
     navigation_controller = NavigationController(stdscr)
-    main_menu_screen = MainMenuScreen(stdscr,
-                                      navigation_controller,
-                                      config_controller
-                                      )
+    main_menu_screen = MainMenuScreen(stdscr, navigation_controller, config_controller)
     navigation_controller.navigate_to(main_menu_screen)
 
     stdscr.getch()
