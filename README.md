@@ -16,10 +16,10 @@ This project uses **`pre-commit`** hooks to ensure code consistency and quality.
 - **Git**: Ensure Git is installed and properly configured.
 
 ## Installation Instructions
-1. Clone the repository:
+1. Fork and clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone <repository-fork-url>
+   cd <repository-fork-folder>
    ```
 
 2. Install `pre-commit`:
