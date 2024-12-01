@@ -2,6 +2,7 @@ from ConfigController import ConfigController
 from Validators import Validator, builtin_validators
 from exceptions.ValidatorExceptions import ValidatorAlreadyExists
 from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+from ui.screens.ConfirmScreen import ConfirmScreen
 from ui.screens.validators import CreateValidatorScreen
 from ui.NavigationController import NavigationController
 from Colors import Colors
@@ -65,6 +66,8 @@ class EditValidatorScreen(BaseScreen):
             elif self.selected_idx == 1:
                 self.text_field = self.text_field.strip()
                 try:
+                    if self.validator.name == self.text_field:
+                        self.navigate_back()
                     if not self.text_field == self.validator.name:
                         self.config_controller.change_validator_name(self.validator.name, self.text_field)
                         self.navigate_back()
@@ -75,7 +78,20 @@ class EditValidatorScreen(BaseScreen):
                 except PythonKeywordException as e:
                     self.error_messages = [str(e)]
             elif self.selected_idx == 2:
-                self.config_controller.remove_validator(self.validator.name)
-                self.navigate_back()
+                self.navigation_controller.navigate_to(
+                            ConfirmScreen(
+                                self.stdscr,
+                                self.navigation_controller,
+                                self.config_controller,
+                                confirm_callback=lambda: [
+                                    self.config_controller.remove_validator(self.validator.name),
+                                    self.navigate_back(2)
+                                ],
+                                title="Delete Validator",
+                                message=(f"Are you sure you want to delete validator '{self.validator.name}'?\n"
+                                         "This is new line"
+                                         )
+                            )
+                        )
             elif self.selected_idx == 3:
                 self.navigate_back()
