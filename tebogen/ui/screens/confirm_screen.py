@@ -1,3 +1,13 @@
+"""
+A module providing a screen to confirm a user action.
+
+The ConfirmScreen class is a special screen for confirming a user action. It
+displays a title and an optional message, and provides Yes and No buttons for
+the user to confirm or cancel the action. The screen is used to prevent
+accidental changes to the user's data.
+
+"""
+
 import curses
 import textwrap
 
@@ -8,6 +18,14 @@ from tebogen.ui.NavigationController import NavigationController
 
 
 class ConfirmScreen(BaseScreen):
+    """
+    A screen to confirm a user action.
+
+    This class provides a screen to confirm a user action. It displays a
+    title and an optional message, and provides Yes and No buttons for
+    the user to confirm or cancel the action.
+    """
+
     def __init__(
         self,
         stdscr,
@@ -17,6 +35,17 @@ class ConfirmScreen(BaseScreen):
         title: str,
         message: str | None = None,
     ):
+        """
+        Initializes a new ConfirmScreen instance.
+
+        Args:
+            stdscr: The curses window to use for displaying the screen.
+            navigation_controller (NavigationController): Manages navigation between screens.
+            config_controller (ConfigController): Handles configuration management.
+            confirm_callback: A callback function to be executed when the action is confirmed.
+            title (str): The title to display on the confirm screen.
+            message (str | None): An optional message to display on the confirm screen.
+        """
         super().__init__(stdscr, navigation_controller, config_controller)
         self.selected_idx = 0
         self.title = title
@@ -24,6 +53,15 @@ class ConfirmScreen(BaseScreen):
         self.confirm_callback = confirm_callback
 
     def display(self):
+        """
+        Displays the confirm screen.
+
+        This method displays the confirm screen, including the title and an
+        optional message. It also displays the [Cancel] and [Confirm] options
+        and highlights the currently selected option.
+
+        This method should be called whenever the screen needs to be updated.
+        """
         self.stdscr.clear()
         height, width = self.stdscr.getmaxyx()
 
@@ -54,7 +92,16 @@ class ConfirmScreen(BaseScreen):
         self.stdscr.refresh()
 
     def handle_input(self, key):
+        """
+        Handle user input for the confirm screen.
 
+        Args:
+            key: The key pressed by the user. This determines the action to be taken.
+
+        Actions:
+            - Moves the selection up or down between "Cancel" and "Confirm" options.
+            - Executes the selected action when the Enter key is pressed.
+        """
         if key == curses.KEY_UP and self.selected_idx == 1:
             self.selected_idx -= 1
         elif key == curses.KEY_DOWN and self.selected_idx == 0:

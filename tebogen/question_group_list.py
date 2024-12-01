@@ -1,3 +1,12 @@
+"""
+A module providing a list-like container for managing a collection of Question and Group objects.
+
+The QuestionGroupList class provides methods to add, remove, and manipulate questions and groups
+within the list. It ensures that the list maintains a consistent order and allows
+for operations like popping elements, moving elements up or down, and accessing
+elements by index.
+"""
+
 from typing import cast
 
 from tebogen.exceptions.question_group_list_exceptions import BoundaryReachedException
@@ -6,10 +15,31 @@ from tebogen.question import Question
 
 
 class QuestionGroupList:
+    """
+    A list-like container for managing a collection of Question and Group objects.
+
+    This class provides methods to add, remove, and manipulate questions and groups
+    within the list. It ensures that the list maintains a consistent order and allows
+    for operations like popping elements, moving elements up or down, and accessing
+    elements by index.
+
+    Attributes:
+        _questions_and_groups (list[Question | Group]): The internal list holding
+            the Question and Group objects.
+    """
 
     _questions_and_groups: list[Question | Group] = []
 
     def __init__(self, questions_and_groups: list[Question | Group]):
+        """
+        Initializes the question and group list with the given list of questions and groups.
+
+        Args:
+            questions_and_groups (list[Question | Group]): A list of Question and Group instances.
+
+        Raises:
+            TypeError: If the given list contains an item that is neither a Question nor a Group instance.
+        """
         for element in questions_and_groups:
             if not isinstance(element, Question) and not isinstance(element, Group):
                 raise TypeError(
@@ -18,6 +48,19 @@ class QuestionGroupList:
         self._questions_and_groups = questions_and_groups
 
     def add(self, value: Question | Group, index: int | None = None) -> None:
+        """
+        Adds a question or group to the question and group list at the given index.
+
+        Args:
+            value (Question | Group): The question or group to be added.
+            index (int, optional): The index to insert the question or group at.
+                If not provided, the question or group is appended to the end of the list.
+
+        Raises:
+            ValueError: If a question or group already exists in the list.
+            IndexError: If the index is out of range.
+            TypeError: If the value is not a Question or Group instance.
+        """
         if isinstance(value, Question):
             for element in self._questions_and_groups:
                 if isinstance(element, Question) and element == value:
@@ -46,6 +89,19 @@ class QuestionGroupList:
     def add_question_to_group(
         self, question: Question, group_index: int, index_in_group: int | None = None
     ) -> None:
+        """
+        Adds a question to a group in the question group list at the given index.
+
+        Args:
+            question (Question): The question to be added.
+            group_index (int): The index of the group to add the question to.
+            index_in_group (int | None): The index to insert the question at in the group.
+                If None, the question is appended to the end of the group.
+
+        Raises:
+            IndexError: If the group index is out of range.
+            TypeError: If the element at the given index is not a Group.
+        """
         if group_index < 0 or group_index >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
@@ -54,11 +110,29 @@ class QuestionGroupList:
         group.questions.add(question, index_in_group)
 
     def pop(self, index: int) -> Question | Group:
+        """
+        Removes a question or group from the question group list at the given index.
+
+        Args:
+            index (int): The index of the question or group to be removed.
+
+        Returns:
+            Question | Group: The removed question or group.
+
+        Raises:
+            IndexError: If the index is out of range.
+        """
         if index < 0 or index >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         return self._questions_and_groups.pop(index)
 
     def ungroup_all_questions(self, group_index: int) -> None:
+        """
+        Removes all questions from a group and places them after the group in the question list.
+
+        Args:
+            group_index (int): The index of the group to ungroup.
+        """
         if group_index < 0 or group_index >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
@@ -71,6 +145,18 @@ class QuestionGroupList:
     def ungroup_single_question(
         self, group_index: int, question_index: int, after: bool = True
     ) -> None:
+        """
+        Removes a single question from a group and places it after or before the group in the question list.
+
+        Args:
+            group_index (int): The index of the group to remove the question from.
+            question_index (int): The index of the question to be removed from the group.
+            after (bool, optional): If True (default), the question is placed after the group. If False, the question is placed before the group.
+
+        Raises:
+            IndexError: If the group or question index is out of range.
+            TypeError: If the group at the given index is not a Group instance.
+        """
         if group_index < 0 or group_index >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
@@ -87,6 +173,19 @@ class QuestionGroupList:
     def move_question_to_group(
         self, question_index: int, group_index: int, index_in_group: int | None = None
     ) -> None:
+        """
+        Moves a question from the question list to a group.
+
+        Args:
+            question_index (int): The index of the question to be moved.
+            group_index (int): The index of the group to move the question to.
+            index_in_group (int, optional): The index to insert the question at in the group.
+                If not provided, the question is appended to the end of the group.
+
+        Raises:
+            IndexError: If the question or group index is out of range.
+            TypeError: If the question or group at the given index is not of the correct type.
+        """
         if group_index < 0 or group_index >= len(self._questions_and_groups):
             raise IndexError("group_index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
@@ -119,6 +218,32 @@ class QuestionGroupList:
         raise ValueError("Element not found")
 
     def move_down(self, variable_name: str) -> int:
+        """
+        Moves a question or group down within the question group list.
+
+        This function attempts to move the element identified by the
+        provided variable name down in the list. If the element is a group,
+        it swaps the group with the preceding element if possible. If the
+        element is a question, it swaps the question with the preceding
+        element or moves it into the preceding group if applicable.
+
+        Args:
+            variable_name (str): The variable name of the question or group
+                                to be moved.
+
+        Returns:
+            int: The shift in position. A return value of 0 indicates no
+                change in level, a positive value indicates a move into
+                a group, and a negative value indicates a move out of a
+                group.
+
+        Raises:
+            BoundaryReachedException: If the element is already at the top
+                                    of the list or group and cannot be
+                                    moved further up.
+            RuntimeError: If an unexpected state occurs where the move
+                        logic cannot be determined.
+        """
         idx, sub_idx = self.find_element(variable_name)
 
         if sub_idx is None:  # Top-level element
@@ -153,6 +278,32 @@ class QuestionGroupList:
         raise RuntimeError("Unexpected state: failed to determine move_down logic")
 
     def move_up(self, variable_name: str) -> int:
+        """
+        Moves a question or group up within the question group list.
+
+        This function attempts to move the element identified by the
+        provided variable name up in the list. If the element is a group,
+        it swaps the group with the preceding element if possible. If the
+        element is a question, it swaps the question with the preceding
+        element or moves it into the preceding group if applicable.
+
+        Args:
+            variable_name (str): The variable name of the question or group
+                                to be moved.
+
+        Returns:
+            int: The shift in position. A return value of 0 indicates no
+                change in level, a positive value indicates a move into
+                a group, and a negative value indicates a move out of a
+                group.
+
+        Raises:
+            BoundaryReachedException: If the element is already at the top
+                                    of the list or group and cannot be
+                                    moved further up.
+            RuntimeError: If an unexpected state occurs where the move
+                        logic cannot be determined.
+        """
         idx, sub_idx = self.find_element(variable_name)
 
         if sub_idx is None:  # Top-level element
@@ -189,6 +340,16 @@ class QuestionGroupList:
         raise RuntimeError("Unexpected state: failed to determine move_up logic")
 
     def swap(self, index1: int, index2: int) -> None:
+        """
+        Swaps two elements in the question group list at the given indices.
+
+        Args:
+            index1 (int): The index of the first element to be swapped.
+            index2 (int): The index of the second element to be swapped.
+
+        Raises:
+            IndexError: The index is out of range.
+        """
         if index1 < 0 or index1 >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         if index2 < 0 or index2 >= len(self._questions_and_groups):
@@ -211,9 +372,33 @@ class QuestionGroupList:
         return len(self._questions_and_groups)
 
     def __repr__(self):
-        return f"QuestionGroupList(questions_and_groups={repr(self._questions_and_groups)})"
+        """
+        Return a string representation of the QuestionGroupList instance.
+
+        The representation includes the list of questions and groups in the
+        QuestionGroupList, formatted as a string for debugging and logging
+        purposes.
+
+        Returns:
+            str: A string representation of the QuestionGroupList instance.
+        """
+        return f"QuestionGroupList(_questions_and_groups={repr(self._questions_and_groups)})"
 
     def pretty_print(self):
+        """
+        Pretty print the QuestionGroupList instance.
+
+        Prints the list of questions and groups. If an element is a Group,
+        it will print the variable name of the group, and then recursively
+        call the pretty_print method on the QuestionList instance inside
+        the group.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         for idx, element in enumerate(self._questions_and_groups):
             if isinstance(element, Question):
                 print(f"{idx}: {element.variable_name}")
@@ -222,10 +407,24 @@ class QuestionGroupList:
                 element.questions.pretty_print(indent=2, prefix=f"{idx}.")
 
     def to_dict(self):
+        """
+        Convert a QuestionGroupList instance to a list of dicts.
+
+        :return: A list of dicts where each dict must contain either "questions" key or
+            represent a question.
+        """
         return [item.to_dict() for item in self._questions_and_groups]
 
     @classmethod
     def from_dict(cls, data: dict):
+        """
+        Create a QuestionGroupList from a list of dicts.
+
+        :param data: list of dicts where each dict must contain either "questions" key or
+            represent a question.
+        :return: QuestionGroupList instance
+        :raises ValueError: if unable to parse question
+        """
         questions_and_groups = []
         for item in data:
             if "questions" in item:

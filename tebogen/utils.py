@@ -1,3 +1,10 @@
+"""
+Utilities.
+
+This module contains utility functions.
+
+"""
+
 import keyword
 import re
 

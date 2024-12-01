@@ -1,3 +1,11 @@
+"""
+This module provides the ValidatorsListScreen class, which is a UI screen for displaying a
+list of all validators in the application. It provides an interface for the user to navigate
+through the list of validators and select one to edit or delete. It also provides an option
+to create a new validator.
+
+"""
+
 import curses
 
 from tebogen.colors import Colors
@@ -10,18 +18,46 @@ from tebogen.validators import Validator, builtin_validators
 
 
 class ValidatorsListScreen(BaseScreen):
+    """
+    A screen to display a list of all validators in the application.
+
+    The list is scrolled and shows whether a validator is a built-in or custom
+    validator. The selected validator is highlighted. The user can navigate the
+    list and select a validator to view/edit its details.
+
+    """
+
     def __init__(
         self,
         stdscr,
         navigation_controller: NavigationController,
         config_controller: ConfigController,
     ):
+        """
+        Initialize the ValidatorsListScreen.
+
+        Args:
+            stdscr: The curses window to use.
+            navigation_controller: Manages navigation between screens.
+            config_controller: Handles configuration management.
+
+        Attributes:
+            selected_idx: The index of the currently selected validator.
+            start_idx: The starting index for scrolling the validator list.
+        """
         super().__init__(stdscr, navigation_controller, config_controller)
         self.selected_idx = 0
         self.start_idx = 0
         self.fetch_validators(self.config_controller)
 
     def display(self):
+        """
+        Displays a list of all validators in the application.
+
+        The list is scrolled and shows whether a validator is a built-in or custom
+        validator. The selected validator is highlighted.
+
+        """
         self.fetch_validators(self.config_controller)
         self.stdscr.clear()
         height, width = self.stdscr.getmaxyx()
@@ -59,11 +95,33 @@ class ValidatorsListScreen(BaseScreen):
         self.stdscr.refresh()
 
     def fetch_validators(self, config_controller: ConfigController):
+        """
+        Fetch the list of validators from the config_controller and populate the menu_items with them.
+
+        The first item in the menu_items is always "[Create custom validator]".
+        Then, the list of validators is appended to the menu_items.
+
+        Args:
+            config_controller (ConfigController): The config_controller that contains the list of validators.
+        """
         self.menu_items = ["[Create custom validator]"]
         for validator in config_controller.validators.validators:
             self.menu_items.append(validator)
 
     def handle_input(self, key):
+        """
+        Handle user input for the ValidatorsListScreen.
+
+        Args:
+            key: The key pressed by the user. This determines the action to be taken.
+
+        Actions:
+            - Moves the selection up or down between the list of validators.
+            - Navigates to CreateValidatorScreen when the first item is selected.
+            - Navigates to EditValidatorScreen when a custom validator is selected.
+            - Does nothing when a built-in validator is selected.
+            - Navigates back to the previous screen when the Backspace key is pressed.
+        """
         height, _ = self.stdscr.getmaxyx()
         visible_items = height - 2
 
