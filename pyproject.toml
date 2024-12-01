@@ -19,3 +19,7 @@ classifiers = [
 [project.scripts]
 tebogen = "tebogen.__main__:run"
 
+[tool.isort]
+profile = "black"
+
+
