@@ -72,9 +72,54 @@ git commit --no-verify -m "Your commit message"
 ---
 
 ## Future Contributors
+
 When other developers clone the repository, they only need to install `pre-commit` and run:
 ```bash
 pip install pre-commit
 pre-commit install
 ```
+
+## Debugging for Contributors
+
+To make development and debugging easier, you can set up the project in editable mode. This allows you to make changes to the source files and immediately see the effects without having to reinstall the package every time.
+
+### Steps to Set Up Debugging
+
+1. **Install the project in editable mode**:
+   Run the following command in the root directory of the project (where `setup.py` or `pyproject.toml` is located):
+   ```bash
+   pip install -e .
+   ```
+   This will install the project in "editable" mode, meaning any changes you make to the source code will be reflected immediately.
+
+2. **Run the project**:
+   After installation, you can use the project’s CLI entry point (if defined in the setup):
+   ```bash
+   tebogen
+   ```
+   This will execute the latest version of the code directly from your working directory.
+
+3. **Make Changes**:
+   - Edit the source files in the `tebogen/` directory.
+   - Changes will automatically apply the next time you run `tebogen`.
+
+### Notes
+- Ensure you have all necessary dependencies installed by running:
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+- If you encounter any issues, verify that the correct Python environment is active:
+  ```bash
+  which python
+  which tebogen
+  ```
+
+- For major changes or to ensure a clean environment, reinstall the package:
+  ```bash
+  pip uninstall tebogen
+  pip install -e .
+  ```
+
+This setup helps streamline development by reducing the need for repeated package builds.
 
