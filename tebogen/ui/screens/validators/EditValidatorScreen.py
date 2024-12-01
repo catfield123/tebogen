@@ -88,10 +88,7 @@ class EditValidatorScreen(BaseScreen):
                                     self.navigate_back(2)
                                 ],
                                 title="Delete Validator",
-                                message=(f"Are you sure you want to delete validator '{self.validator.name}'?\n"
-                                         "This is new line"
-                                         )
-                            )
+                                message=f"Are you sure you want to delete validator '{self.validator.name}'?"                                         )
                         )
             elif self.selected_idx == 3:
                 self.navigate_back()
