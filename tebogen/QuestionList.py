@@ -1,4 +1,4 @@
-from Question import Question
+from tebogen.Question import Question
 
 
 class QuestionList:

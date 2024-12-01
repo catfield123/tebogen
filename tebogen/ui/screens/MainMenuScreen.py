@@ -1,12 +1,12 @@
 import curses
-from ui.BaseScreen import BaseScreen
+from tebogen.ui.BaseScreen import BaseScreen
 
-from ConfigController import ConfigController
-from ui.NavigationController import NavigationController
+from tebogen.ConfigController import ConfigController
+from tebogen.ui.NavigationController import NavigationController
 
-from ui.screens.settings.SettingsMenuScreen import SettingsMenuScreen
-from ui.screens.questions.QuestionsListScreen import QuestionsListScreen
-from ui.screens.validators.ValidatorsListScreen import ValidatorsListScreen
+from tebogen.ui.screens.settings.SettingsMenuScreen import SettingsMenuScreen
+from tebogen.ui.screens.questions.QuestionsListScreen import QuestionsListScreen
+from tebogen.ui.screens.validators.ValidatorsListScreen import ValidatorsListScreen
 
 
 class MainMenuScreen(BaseScreen):

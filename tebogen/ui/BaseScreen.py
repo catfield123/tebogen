@@ -1,5 +1,5 @@
-from ConfigController import ConfigController
-from ui.NavigationController import NavigationController
+from tebogen.ConfigController import ConfigController
+from tebogen.ui.NavigationController import NavigationController
 
 class BaseScreen:
     def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):

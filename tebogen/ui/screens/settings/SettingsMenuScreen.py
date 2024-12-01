@@ -1,6 +1,6 @@
-from ui.NavigationController import NavigationController
-from ConfigController import ConfigController
-from ui.BaseScreen import BaseScreen
+from tebogen.ui.NavigationController import NavigationController
+from tebogen.ConfigController import ConfigController
+from tebogen.ui.BaseScreen import BaseScreen
 import curses
 
 class SettingsMenuScreen(BaseScreen):

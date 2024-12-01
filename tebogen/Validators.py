@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from exceptions.ValidatorExceptions import ValidatorAlreadyExists
-from utils import is_valid_python_variable_name
-from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
+from tebogen.utils import is_valid_python_variable_name
+from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
 
 class DateFormatEnum(Enum):
     DD_MM_YYYY = "dd.mm.yyyy"

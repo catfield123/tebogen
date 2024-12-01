@@ -1,7 +1,7 @@
 import re
 import keyword
 
-from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
 
 def is_valid_python_variable_name(name: str) -> bool:
     """

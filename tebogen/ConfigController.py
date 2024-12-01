@@ -1,15 +1,15 @@
-from Validators import ValidatorsList, validators_list
-from QuestionGroupList import QuestionGroupList
+from tebogen.Validators import ValidatorsList, validators_list
+from tebogen.QuestionGroupList import QuestionGroupList
 import json
 
 import os
 
 import copy
 
-from ConfigJSONEncoder import ConfigJSONEncoder
-from ValidatorFactory import ValidatorFactory
-from Question import Question
-from Group import Group
+from tebogen.ConfigJSONEncoder import ConfigJSONEncoder
+from tebogen.ValidatorFactory import ValidatorFactory
+from tebogen.Question import Question
+from tebogen.Group import Group
 
 class ConfigController:
     _is_admin_bot_enabled : bool = False

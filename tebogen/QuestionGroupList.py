@@ -1,6 +1,6 @@
-from Question import Question
-from Group import Group
-from exceptions.QuestionGroupListExceptions import BoundaryReachedException
+from tebogen.Question import Question
+from tebogen.Group import Group
+from tebogen.exceptions.QuestionGroupListExceptions import BoundaryReachedException
 
 class QuestionGroupList:
 

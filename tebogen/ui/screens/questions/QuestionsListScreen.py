@@ -1,11 +1,11 @@
-from ConfigController import ConfigController
-from Colors import Colors
-from Question import Question
-from Group import Group
-from exceptions.QuestionGroupListExceptions import BoundaryReachedException
-from ui.NavigationController import NavigationController
+from tebogen.ConfigController import ConfigController
+from tebogen.Colors import Colors
+from tebogen.Question import Question
+from tebogen.Group import Group
+from tebogen.exceptions.QuestionGroupListExceptions import BoundaryReachedException
+from tebogen.ui.NavigationController import NavigationController
 
-from ui.BaseScreen import BaseScreen
+from tebogen.ui.BaseScreen import BaseScreen
 import curses
 
 

@@ -1,11 +1,11 @@
-from ConfigController import ConfigController
-from Validators import Validator, builtin_validators
-from Colors import Colors
-from ui.screens.validators.EditValidatorScreen import EditValidatorScreen
-from ui.screens.validators.CreateValidatorScreen import CreateValidatorScreen
-from ui.NavigationController import NavigationController
+from tebogen.ConfigController import ConfigController
+from tebogen.Validators import Validator, builtin_validators
+from tebogen.Colors import Colors
+from tebogen.ui.screens.validators.EditValidatorScreen import EditValidatorScreen
+from tebogen.ui.screens.validators.CreateValidatorScreen import CreateValidatorScreen
+from tebogen.ui.NavigationController import NavigationController
 
-from ui.BaseScreen import BaseScreen
+from tebogen.ui.BaseScreen import BaseScreen
 import curses
 
 

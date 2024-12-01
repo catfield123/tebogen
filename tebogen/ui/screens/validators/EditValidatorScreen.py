@@ -1,13 +1,13 @@
-from ConfigController import ConfigController
-from Validators import Validator, builtin_validators
-from exceptions.ValidatorExceptions import ValidatorAlreadyExists
-from exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
-from ui.screens.ConfirmScreen import ConfirmScreen
-from ui.screens.validators import CreateValidatorScreen
-from ui.NavigationController import NavigationController
-from Colors import Colors
+from tebogen.ConfigController import ConfigController
+from tebogen.Validators import Validator, builtin_validators
+from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
+from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
+from tebogen.ui.screens.ConfirmScreen import ConfirmScreen
+from tebogen.ui.screens.validators import CreateValidatorScreen
+from tebogen.ui.NavigationController import NavigationController
+from tebogen.Colors import Colors
 
-from ui.BaseScreen import BaseScreen
+from tebogen.ui.BaseScreen import BaseScreen
 import curses
 
 

@@ -1,11 +1,11 @@
 import argparse
 import curses
 
-from Colors import Colors
+from tebogen.Colors import Colors
 
-from ui.NavigationController import NavigationController
-from ui.screens.MainMenuScreen import MainMenuScreen
-from ConfigController import ConfigController
+from tebogen.ui.NavigationController import NavigationController
+from tebogen.ui.screens.MainMenuScreen import MainMenuScreen
+from tebogen.ConfigController import ConfigController
 
 def main(stdscr, config_filename : str):
     Colors.init_colors()

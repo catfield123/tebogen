@@ -1,6 +1,6 @@
-import utils
-from Question import Question
-from QuestionList import QuestionList
+import tebogen.utils as utils
+from tebogen.Question import Question
+from tebogen.QuestionList import QuestionList
 
 
 class Group:
