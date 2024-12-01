@@ -71,8 +71,16 @@ class ConfigController:
             obj.add_validator(validator.get("name"))
         return obj
         
-        
-        
+
+    def move_qustion_or_group_up(self, variable_name: str) -> int:
+        shift = self.questions_and_groups.move_up(variable_name)
+        self.save_to_file()
+        return shift
+
+    def move_qustion_or_group_down(self, variable_name: str) -> int:
+        shift = self.questions_and_groups.move_down(variable_name)
+        self.save_to_file()
+        return shift
 
     @property
     def is_admin_bot_enabled(self):
