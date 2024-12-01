@@ -41,7 +41,7 @@ class QuestionList:
         self._questions.insert(new_index, element)
 
 
-    def pop(self, index : int) -> None:
+    def pop(self, index : int) -> Question:
         """
         Removes a question from the question list at the given index.
 

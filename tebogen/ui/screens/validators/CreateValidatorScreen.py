@@ -2,7 +2,6 @@ from tebogen.ConfigController import ConfigController
 from tebogen.validators import Validator, builtin_validators
 from tebogen.exceptions.ValidatorExceptions import ValidatorAlreadyExists
 from tebogen.exceptions.common import NotValidPythonVariableNameException, PythonKeywordException
-from tebogen.ui.screens.validators import CreateValidatorScreen
 from tebogen.ui.NavigationController import NavigationController
 from tebogen.Colors import Colors
 from tebogen.ui.BaseScreen import BaseScreen
@@ -15,7 +14,7 @@ class CreateValidatorScreen(BaseScreen):
         super().__init__(stdscr, navigation_controller, config_controller)
         self.selected_idx = 0
         self.is_typing = False 
-        self.error_messages = []
+        self.error_messages : list[str] = []
         self.text_field = ""
 
     def display(self):

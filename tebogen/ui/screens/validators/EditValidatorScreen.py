@@ -17,7 +17,7 @@ class EditValidatorScreen(BaseScreen):
         self.validator = validator
         self.selected_idx = 0
         self.is_typing = False
-        self.error_messages = []
+        self.error_messages : list[str] = []
         self.text_field = self.validator.name
 
     def display(self):

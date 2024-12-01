@@ -1,6 +1,7 @@
 from tebogen.Question import Question
 from tebogen.Group import Group
 from tebogen.exceptions.QuestionGroupListExceptions import BoundaryReachedException
+from typing import cast
 
 class QuestionGroupList:
 
@@ -12,8 +13,7 @@ class QuestionGroupList:
                 raise TypeError("questions_and_groups must be a list of Question or Group instances")
         self._questions_and_groups = questions_and_groups
 
-    def __repr__(self):
-        return f"QuestionGroupList(questions_and_groups={self._questions_and_groups})"
+    
     
 
     def add(self, value : Question | Group, index : int | None = None) -> None:
@@ -47,10 +47,10 @@ class QuestionGroupList:
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
             raise TypeError("Group not found")
-        
-        self._questions_and_groups[group_index].questions.add(question, index_in_group)
+        group = cast(Group, self._questions_and_groups[group_index])
+        group.questions.add(question, index_in_group)
 
-    def pop(self, index : int) -> None:
+    def pop(self, index : int) -> Question | Group:
         if index < 0 or index >= len(self._questions_and_groups):
             raise IndexError("Index out of range")
         return self._questions_and_groups.pop(index)
@@ -61,8 +61,9 @@ class QuestionGroupList:
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
             raise TypeError("Group not found")
-        for question_index in range(len(self._questions_and_groups[group_index].questions)):
-            question = self._questions_and_groups[group_index].questions.pop(0)
+        group = cast(Group, self._questions_and_groups[group_index])
+        for question_index in range(len(group.questions)):
+            question = group.questions.pop(0)
             self.add(question, group_index + question_index + 1)
 
     def ungroup_single_question(self, group_index : int, question_index : int, after : bool = True) -> None:
@@ -70,9 +71,10 @@ class QuestionGroupList:
             raise IndexError("Index out of range")
         if not isinstance(self._questions_and_groups[group_index], Group):
             raise TypeError("Group not found")
-        if len(self._questions_and_groups[group_index].questions) <= question_index:
+        group = cast(Group, self._questions_and_groups[group_index])
+        if len(group.questions) <= question_index:
             raise IndexError("Index out of range")
-        question = self._questions_and_groups[group_index].questions.pop(question_index)
+        question = group.questions.pop(question_index)
         if after:
             self.add(question, group_index+1)
         else:
@@ -88,9 +90,10 @@ class QuestionGroupList:
         if not isinstance(self._questions_and_groups[question_index], Question):
             raise TypeError("Question not found")
         
-        question = self.pop(question_index)
+        question = cast(Question, self.pop(question_index))
         shift = -1 if question_index < group_index else 0
-        self._questions_and_groups[group_index + shift].questions.add(question, index=index_in_group)
+        group = cast(Group, self._questions_and_groups[group_index + shift])
+        group.questions.add(question, index=index_in_group)
 
     def find_element(self, variable_name: str):
         """
@@ -144,6 +147,7 @@ class QuestionGroupList:
                 # Move question out of the group
                 self.ungroup_single_question(idx, sub_idx, after=True)
                 return -1
+        raise RuntimeError("Unexpected state: failed to determine move_down logic")
 
 
     def move_up(self, variable_name: str) -> int:
@@ -180,6 +184,7 @@ class QuestionGroupList:
                 # Move question out of the group
                 self.ungroup_single_question(idx, sub_idx, after=False)
                 return 0
+        raise RuntimeError("Unexpected state: failed to determine move_up logic")
 
 
         
@@ -203,7 +208,8 @@ class QuestionGroupList:
         return len(self._questions_and_groups)
     
     def __repr__(self):
-        return repr(self._questions_and_groups)
+        return f"QuestionGroupList(questions_and_groups={repr(self._questions_and_groups)})"
+    
     
     def pretty_print(self):
         for idx, element in enumerate(self._questions_and_groups):

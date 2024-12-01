@@ -12,11 +12,11 @@ import curses
 class QuestionsListScreen(BaseScreen):
     def __init__(self, stdscr, navigation_controller: NavigationController, config_controller: ConfigController):
         super().__init__(stdscr, navigation_controller, config_controller)
-        self.selected_idx = 0
-        self.start_idx = 0
-        self.menu_items = []
+        self.selected_idx : int = 0
+        self.start_idx : int = 0
+        self.menu_items : list[tuple[Question |  Group, int]] = []
         self.fetch_questions_and_groups()
-        self.is_moving = False
+        self.is_moving : bool = False
 
     def fetch_questions_and_groups(self):
 
