@@ -17,7 +17,9 @@ class Question:
         return f"Question(name={self._name}, variable_name={self._variable_name}, validator={self._validator})"
     
     def __eq__(self, other):
-        if not isinstance(other, Question):
+        if isinstance(other, str):
+            return self._name == other
+        elif not isinstance(other, Question):
             return NotImplemented
         return self._name == other._name or self._variable_name == other._variable_name
     
