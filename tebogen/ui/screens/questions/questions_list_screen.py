@@ -12,6 +12,9 @@ from tebogen.group import Group
 from tebogen.question import Question
 from tebogen.ui.base_screen import BaseScreen
 from tebogen.ui.navigation_controller_screen import NavigationController
+from tebogen.ui.screens.questions.create_or_edit_question_screen import (
+    CreateOrEditQuestionScreen,
+)
 
 
 class QuestionsListScreen(BaseScreen):
@@ -175,13 +178,24 @@ class QuestionsListScreen(BaseScreen):
                 self.selected_idx -= 1
                 if self.selected_idx < self.start_idx:
                     self.start_idx -= 1
+                    self.display()
             elif (
                 key == curses.KEY_DOWN and self.selected_idx < len(self.menu_items) - 1
             ):
                 self.selected_idx += 1
                 if self.selected_idx >= self.start_idx + visible_items:
                     self.start_idx += 1
-            self.display()
+                self.display()
+
+            elif key == curses.KEY_F1:
+                self.navigation_controller.navigate_to(
+                    CreateOrEditQuestionScreen(
+                        self.stdscr,
+                        self.navigation_controller,
+                        self.config_controller,
+                        callback=self.fetch_questions_and_groups,
+                    )
+                )
         else:
 
             if key == curses.KEY_UP:
