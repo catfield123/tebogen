@@ -196,6 +196,17 @@ class QuestionsListScreen(BaseScreen):
                         callback=self.fetch_questions_and_groups,
                     )
                 )
+            elif key == curses.KEY_F2:
+                if isinstance(self.menu_items[self.selected_idx][0], Question):
+                    self.navigation_controller.navigate_to(
+                        CreateOrEditQuestionScreen(
+                            self.stdscr,
+                            self.navigation_controller,
+                            self.config_controller,
+                            callback=self.fetch_questions_and_groups,
+                            question=self.menu_items[self.selected_idx][0],
+                        )
+                    )
         else:
 
             if key == curses.KEY_UP:
