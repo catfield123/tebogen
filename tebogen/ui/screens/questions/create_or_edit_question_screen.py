@@ -138,7 +138,7 @@ class CreateOrEditQuestionScreen(BaseScreen):
 
         self.stdscr.refresh()
 
-    def _delete_symbol_from_field(self, selected_idx):
+    def delete_symbol_from_field(self, selected_idx):
         if selected_idx == 0:
             self.name_field = self.name_field[:-1]
         elif selected_idx == 1:
@@ -146,7 +146,7 @@ class CreateOrEditQuestionScreen(BaseScreen):
         elif selected_idx == 2:
             self.validator_field = self.validator_field[:-1]
 
-    def _add_symbol_to_field(self, selected_idx, symbol):
+    def add_symbol_to_field(self, selected_idx, symbol):
         if selected_idx == 0:
             self.name_field += symbol
         elif selected_idx == 1:
