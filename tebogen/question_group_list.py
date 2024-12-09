@@ -9,9 +9,11 @@ elements by index.
 
 from typing import cast
 
+from tebogen.exceptions.question_exceptions import QuestionAlreadyExistsException
 from tebogen.exceptions.question_group_list_exceptions import BoundaryReachedException
 from tebogen.group import Group
 from tebogen.question import Question
+from tebogen.validators import Validator
 
 
 class QuestionGroupList:
@@ -64,7 +66,7 @@ class QuestionGroupList:
         if isinstance(value, Question):
             for element in self._questions_and_groups:
                 if isinstance(element, Question) and element == value:
-                    raise ValueError("Question already exists")
+                    raise QuestionAlreadyExistsException(value.variable_name)
             if index is None:
                 self._questions_and_groups.append(value)
             else:
@@ -199,6 +201,18 @@ class QuestionGroupList:
         shift = -1 if question_index < group_index else 0
         group = cast(Group, self._questions_and_groups[group_index + shift])
         group.questions.add(question, index=index_in_group)
+
+    def has_element(self, variable_name: str) -> bool:
+        for element in self._questions_and_groups:
+            if isinstance(element, Question) and element.variable_name == variable_name:
+                return True, Question
+            if isinstance(element, Group):
+                if element.variable_name == variable_name:
+                    return True, Group
+                for sub_element in element.questions:
+                    if sub_element.variable_name == variable_name:
+                        return True, Question
+        return False, None
 
     def find_element(self, variable_name: str):
         """
@@ -338,6 +352,55 @@ class QuestionGroupList:
                 self.ungroup_single_question(idx, sub_idx, after=False)
                 return 0
         raise RuntimeError("Unexpected state: failed to determine move_up logic")
+
+    def delete_question(self, variable_name: str) -> None:
+        idx, sub_idx = self.find_element(variable_name)
+        if sub_idx is not None:
+            self.ungroup_single_question(idx, sub_idx, before=True)
+            self.pop(idx)
+        else:
+            if isinstance(self._questions_and_groups[idx], Question):
+                self._questions_and_groups.pop(idx)
+            else:
+                raise ValueError("Element is not a question")
+
+    def delete_group(self, variable_name: str) -> None:
+        idx, sub_idx = self.find_element(variable_name)
+        if sub_idx is not None:
+            raise ValueError("Element is not a group")
+        else:
+            if isinstance(self._questions_and_groups[idx], Group):
+                self._questions_and_groups.pop(idx)
+            else:
+                raise ValueError("Element is not a group")
+
+    def update_question(
+        self, new_name: str, new_variable_name: str, new_validator: Validator | None
+    ) -> None:
+        idx, sub_idx = self.find_element(new_variable_name)
+        if sub_idx is not None:
+            question = self._questions_and_groups[idx][sub_idx]
+        else:
+            question = self._questions_and_groups[idx]
+
+        if (
+            new_variable_name != question.variable_name
+            and not self.has_element(new_variable_name)[0]
+        ):
+            question.variable_name = new_variable_name
+        elif (
+            new_variable_name != question.variable_name
+            and self.has_element(new_variable_name)[0]
+        ):
+            raise QuestionAlreadyExistsException(new_variable_name)
+
+        question.name = new_name
+        question.validator = new_validator
+
+        if sub_idx is not None:
+            self._questions_and_groups[idx][sub_idx] = question
+        else:
+            self._questions_and_groups[idx] = question
 
     def swap(self, index1: int, index2: int) -> None:
         """

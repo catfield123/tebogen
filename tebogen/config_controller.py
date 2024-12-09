@@ -6,7 +6,7 @@ from tebogen.config_json_encoder import ConfigJSONEncoder
 from tebogen.group import Group
 from tebogen.question import Question
 from tebogen.question_group_list import QuestionGroupList
-from tebogen.validators import ValidatorsList, validators_list
+from tebogen.validators import Validator, ValidatorsList, validators_list
 
 
 class ConfigController:
@@ -87,6 +87,22 @@ class ConfigController:
         self.save_to_file()
         return shift
 
+    def delete_question(self, variable_name: str) -> None:
+        self.questions_and_groups.delete_question(variable_name)
+        self.save_to_file()
+
+    def update_question(
+        self, new_name: str, new_variable_name: str, new_validator: Validator | None
+    ) -> None:
+        self.questions_and_groups.update_question(
+            new_name, new_variable_name, new_validator
+        )
+        self.save_to_file()
+
+    def delete_group(self, variable_name: str) -> None:
+        self.questions_and_groups.delete_group(variable_name)
+        self.save_to_file()
+
     @property
     def is_admin_bot_enabled(self):
         return self._is_admin_bot_enabled
@@ -151,6 +167,10 @@ class ConfigController:
 
     def add_validator(self, name):
         self._validators.add(name)
+        self.save_to_file()
+
+    def add_question_or_group(self, question_or_group: Question | Group):
+        self._questions_and_groups.add(question_or_group)
         self.save_to_file()
 
     def remove_validator(self, name):
