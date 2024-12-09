@@ -219,6 +219,7 @@ class CreateOrEditQuestionScreen(BaseScreen):
                             )
                         elif self.mode == "edit":
                             self.config_controller.update_question(
+                                self.question,
                                 self.name_field,
                                 self.variable_name_field,
                                 self.validator_field,
@@ -247,6 +248,7 @@ class CreateOrEditQuestionScreen(BaseScreen):
                             self.config_controller.delete_question(
                                 self.question.variable_name
                             ),
+                            self.callback(),
                             self.navigate_back(2),
                         ],
                         title="Delete Question",

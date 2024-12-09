@@ -375,9 +375,13 @@ class QuestionGroupList:
                 raise ValueError("Element is not a group")
 
     def update_question(
-        self, new_name: str, new_variable_name: str, new_validator: Validator | None
+        self,
+        question: Question,
+        new_name: str,
+        new_variable_name: str,
+        new_validator: Validator | None,
     ) -> None:
-        idx, sub_idx = self.find_element(new_variable_name)
+        idx, sub_idx = self.find_element(question.variable_name)
         if sub_idx is not None:
             question = self._questions_and_groups[idx][sub_idx]
         else:

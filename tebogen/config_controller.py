@@ -92,10 +92,14 @@ class ConfigController:
         self.save_to_file()
 
     def update_question(
-        self, new_name: str, new_variable_name: str, new_validator: Validator | None
+        self,
+        question: Question,
+        new_name: str,
+        new_variable_name: str,
+        new_validator: Validator | None,
     ) -> None:
         self.questions_and_groups.update_question(
-            new_name, new_variable_name, new_validator
+            question, new_name, new_variable_name, new_validator
         )
         self.save_to_file()
 
